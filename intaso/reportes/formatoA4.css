@@ -1,0 +1,154 @@
+.clearfix:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+body {
+  position: relative;
+  width: 21cm;  
+  height: 29.7cm; 
+  margin-top: 1cm;
+  margin: 0 auto; 
+  color: #001028;
+  background: #FFFFFF; 
+  font-family: Arial, sans-serif; 
+  font-size: 13px; 
+  font-family: Arial;
+  text-align: justify; 
+}
+
+p{ 	
+  text-align: justify; 
+  margin-bottom: 3pt;
+  margin-top:0pt;
+}
+
+.mayuscula{ 	
+font-size: 11px;
+}
+
+ol{
+  text-align: justify; 
+	text-indent: 0mm;
+	margin-bottom: 3pt;
+	padding-left: 5mm;
+	font-weight: bold;
+}
+
+ul{
+  text-align: justify; 
+	text-indent: 0mm;
+	list-style-type: disc;
+	padding-left: 5mm;
+	font-weight: normal;
+}
+
+h3{
+  text-align: center;
+	margin-top: 3pt;
+	margin-bottom: 3pt;
+}
+
+h2{
+  text-align: center;
+  margin: 0px;
+  padding: 0px;
+}
+
+.datos{
+	font-size: 11px;
+}
+
+.datos th{
+  text-align: left;
+}
+
+.firma{
+	border-bottom: 1px solid black;
+	width: 300px;
+}
+
+.huella{
+	border: 1px solid black;
+	width: 100px;
+	height: 100px;
+}
+
+
+.tinformacion{
+  width: 850px;
+  border: 1px solid black;
+  font-size: 12px;
+}
+
+.tinformacion thead th {
+  background-color: black;
+  color: white;
+}
+
+.tinformacion td, .tinformacion th {
+  text-align: center;
+  font-size: 13px;
+  padding: 0.2em;
+}
+
+.tinformacion th {
+  background-color: #DBDBDB;
+}
+
+#tcuotas{
+  width: 850px;
+  border: 1px solid black;
+  border-collapse: collapse;
+  font-size: 12px;
+}
+
+#tcuotas td, #tcuotas th {
+  text-align: center;
+  border: 1px solid #000;
+  font-size: 13px;
+  padding: 0.2em;
+  width: 95px;
+}
+
+#tcuotas caption, #cuotas .caption  {
+   text-align: center;
+   font-weight: bold;
+   padding: 0.2em;
+   color: #fff;
+   background: black;
+}
+
+#tcuotas th {
+  background-color: black;  
+  color:white;
+}
+
+#tcuotas tr:nth-child(even) { 
+  background: #DBDBDB;
+   }
+
+#tprestamo{
+  border: 1px solid black;
+  font-size: 13px;
+  width: 850px;
+}
+
+#tprestamo thead th{
+  text-align: center;
+  font-weight: bold;
+  background-color: black;
+  color: white;
+}
+
+#tprestamo td{
+  text-align: left;
+  font-size: 12px;
+}
+
+#tprestamo th{
+  background-color: #DBDBDB;
+  text-align: left;
+  font-size: 12px;
+}
