@@ -18,8 +18,11 @@ if($tipo=='DATA'){
    $estado=$_POST['estado'];
    // CONSULTA PARA SELECCIONAR DATOS DE LA TABLA PRESTAMOS
    //select concat(ts.nombres,' ',ts.apaterno,' ',ts.amaterno) as socio, tp.nprestamo, tp.descripcion, tp.monto, tp.tcuotas, tp.mcuota, tp.tem, tp.fecpago, tp.ftermino, tp.estado  from tprestamo as tp, tsocio as ts where tp.idsocio = ts.idsocio and tp.aprobado = 'SI' and tp.sucursal='1' order by tp.idprestamo;
-   $query = pg_query("select concat(ts.nombres,' ',ts.apaterno,' ',ts.amaterno) as socio, tp.nprestamo as cuenta, tp.descripcion as prestamo, tp.monto as monto, tp.tcuotas as cuotas, tp.mcuota as vcuota, tp.plazo as plazo, tp.tem as tem, tp.fecpago as fecpago, tp.fprestamo as ftermino from tprestamo as tp, tsocio as ts where tp.idsocio = ts.idsocio and tp.aprobado = '". $aprobado ."' and tp.estado='". $estado ."' and tp.sucursal='". $sucursal ."' order by tp.fprestamo;");
-
+   if($estado=='EN PROCESO'){
+      $query = pg_query("select concat(ts.nombres,' ',ts.apaterno,' ',ts.amaterno) as socio, tp.nprestamo as cuenta, tp.descripcion as prestamo, tp.monto as monto, tp.tcuotas as cuotas, tp.mcuota as vcuota, tp.plazo as plazo, tp.tem as tem, tp.fecpago as fecpago, tp.fprestamo as ftermino, tp.estado as estado from tprestamo as tp, tsocio as ts where tp.idsocio = ts.idsocio and tp.aprobado = '". $aprobado ."' and (tp.estado='EN PROCESO' or tp.estado='CANCELADO') and tp.sucursal='". $sucursal ."' order by tp.fprestamo;");
+   }else{
+      $query = pg_query("select concat(ts.nombres,' ',ts.apaterno,' ',ts.amaterno) as socio, tp.nprestamo as cuenta, tp.descripcion as prestamo, tp.monto as monto, tp.tcuotas as cuotas, tp.mcuota as vcuota, tp.plazo as plazo, tp.tem as tem, tp.fecpago as fecpago, tp.fprestamo as ftermino, tp.estado as estado from tprestamo as tp, tsocio as ts where tp.idsocio = ts.idsocio and tp.aprobado = '". $aprobado ."' and tp.estado='". $estado ."' and tp.sucursal='". $sucursal ."' order by tp.fprestamo;");  
+   }
    $tregistros = pg_numrows($query);
    for($i=1;$i<=$tregistros; $i++){
       $registros = pg_fetch_array($query, null, PGSQL_ASSOC);
@@ -314,7 +317,7 @@ echo '<br>
 if($tipo=='EXTR'){
    $nprestamo=$_POST['nprestamo'];
 
-   $query = pg_query("select ts.idsocio+10000 as idsocio, ts.numerodoc, concat(ts.nombres,' ',ts.apaterno,' ',ts.amaterno) as socio, tp.nprestamo, tp.descripcion, tp.tcuotas, tp.mcuota, tp.monto, tp.plazo, tp.comision, tp.aporte, tp.tea, tp.tem, tp.mora, tp.fprestamo, tp.fecpago, tp.condicion, tp.garantia, tp.analista, tp.recaudador from tprestamo as tp, tsocio as ts where ts.idsocio=tp.idsocio and  tp.nprestamo='". $nprestamo ."'");
+   $query = pg_query("select ts.idsocio+10000000 as idsocio, ts.numerodoc, concat(ts.nombres,' ',ts.apaterno,' ',ts.amaterno) as socio, tp.nprestamo, tp.descripcion, tp.tcuotas, tp.mcuota, tp.monto, tp.plazo, tp.comision, tp.aporte, tp.tea, tp.tem, tp.mora, tp.fprestamo, tp.fecpago, tp.condicion, tp.garantia, tp.analista, tp.recaudador from tprestamo as tp, tsocio as ts where ts.idsocio=tp.idsocio and  tp.nprestamo='". $nprestamo ."'");
    $registros = pg_fetch_array($query, null, PGSQL_ASSOC);
 
    $querya = pg_query("select concat(nombres,' ',apaterno,' ',amaterno) as analista from ttrabajador where idtrabajador='".$registros[analista]."';");
@@ -323,7 +326,7 @@ if($tipo=='EXTR'){
    $queryo = pg_query("select concat(nombres,' ',apaterno,' ',amaterno) as operador from ttrabajador where idtrabajador='".$registros[recaudador]."';");
    $registroso = pg_fetch_array($queryo, null, PGSQL_ASSOC);
 
-echo '<div id="ddescontenido" class="dpagina" style="display: block;">
+echo '<div id="dpextcontenido" class="dpagina" style="display: block;">
       <img src="../recursos/logoian.png"/>
       <hr>
       <br>
@@ -768,6 +771,45 @@ function redondear($num){
       return 0;
    }
 }
+
+
+// Muestra datos de Cambio de Cartera
+if($tipo=='CARTE'){
+   $aprobado=$_POST['aprobado'];
+   $estado=$_POST['estado'];
+   // CONSULTA PARA SELECCIONAR DATOS DE LA TABLA PRESTAMOS
+   //select tp.idprestamo, tp.idsocio, concat(ts.apaterno,' ',ts.amaterno,' ',ts.nombres) as socio, tp.nprestamo, tp.descripcion, tp.monto, tp.analista, concat(tt.apaterno,' ',tt.amaterno,' ',tt.nombres) as nanalista from tprestamo as tp, tsocio as ts, ttrabajador as tt where tp.idsocio=ts.idsocio and tp.analista=tt.idtrabajador and tp.estado='EN PROCESO' and tp.aprobado='SI' and tp.sucursal='1' group by tp.idprestamo, tp.idsocio, socio, tp.nprestamo, tp.descripcion, tp.monto, tp.analista, nanalista order by analista
+   $query = pg_query("select tp.idprestamo, tp.idsocio, concat(ts.apaterno,' ',ts.amaterno,' ',ts.nombres) as socio, tp.nprestamo, tp.descripcion, tp.monto, tp.analista, concat(tt.apaterno,' ',tt.amaterno,' ',tt.nombres) as nanalista from tprestamo as tp, tsocio as ts, ttrabajador as tt where tp.idsocio=ts.idsocio and tp.analista=tt.idtrabajador and tp.estado='". $estado ."' and tp.aprobado='". $aprobado ."' and tp.sucursal='". $sucursal ."' group by tp.idprestamo, tp.idsocio, socio, tp.nprestamo, tp.descripcion, tp.monto, tp.analista, nanalista order by analista");
+
+   $tregistros = pg_numrows($query);
+   for($i=1;$i<=$tregistros; $i++){
+      $registros = pg_fetch_array($query, null, PGSQL_ASSOC);
+      $data["data"][]=$registros;
+   }
+   pg_free_result($query);
+   echo json_encode($data);
+}
+
+
+//Actualiza analista de Cambio de Cartera
+if($tipo=='UPCAR'){
+  $idprestamo=$_POST['idprestamo'];
+  $idanalista=$_POST['idanalista'];
+
+  //CONSULTA PARA ACTUALIZAR ANALISTA
+  //update tprestamo set analista='17' where idprestamo='166' and sucursal='1'
+  $query = pg_query("update tprestamo set analista='". $idanalista ."' where idprestamo='". $idprestamo ."' and sucursal='". $sucursal ."';");  
+
+  if ($query) {
+    echo 'EL ANALISTA FUE ACTUALIZADO CORRECTAMENTE';
+    pg_free_result($query);  
+  }else{
+    echo 'NO SE PUDO ACTUALIZAR EL DATO DEL ANALISTA';
+    pg_free_result($query);
+  }
+
+}
+
 //pg_free_result($query);
 pg_close($BD_conexion);
 ?>

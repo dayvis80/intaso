@@ -43,7 +43,7 @@ $vdescuento=$_POST['vdescuento'];
 $ncuota=$_POST['ncuota'];
 $fechaprog=$_POST['fechaprog'];
 
-  if(($tipotrabajador==2) or ($tipotrabajador==3) or ($tipotrabajador==4) or ($tipotrabajador==5) or ($tipotrabajador==10) or ($tipotrabajador==12)){
+  if(($tipotrabajador==1) or ($tipotrabajador==3) or ($tipotrabajador==4) or ($tipotrabajador==5) or ($tipotrabajador==10) or ($tipotrabajador==12)){
       //select tc.idcaja from tcaja as tc, ttipotrabajador as ttt, ttrabajador as tt where tc.abierto='SI' and tc.trabajador=tt.idtrabajador and tt.tipotrabajador=ttt.idtipotrabajador and ttt.idtipotrabajador='5' and tt.idtrabajador='2';
   $query = "select tc.idcaja from tcaja as tc, ttipotrabajador as ttt, ttrabajador as tt where (ttt.idtipotrabajador='2' or ttt.idtipotrabajador='3' or ttt.idtipotrabajador='4' or ttt.idtipotrabajador='5' or ttt.idtipotrabajador='10') and tc.abierto='SI' and tc.trabajador=tt.idtrabajador and tt.tipotrabajador=ttt.idtipotrabajador and tt.idtrabajador='". $trabajador ."';";
   $datos=pg_query($query);
@@ -56,7 +56,7 @@ $fechaprog=$_POST['fechaprog'];
       if(($tipotrabajador==12) or ($tipotrabajador==3))
        {$idcaja=0; }
 
-      // ----- Buscamos el ultimo número de movimiento y sumamos uno para el nuevo numero de prestamo
+      // ----- Obtenemos Ultimo Número de Movimiento y Sumamos Uno
       $query = pg_query("select max(numeromov) as num from tmovimiento where flujomov='E' and sucursal='".$sucursal."';");
       $tregistros = pg_numrows($query);
       $registros = pg_fetch_array($query, null, PGSQL_ASSOC);
@@ -77,7 +77,7 @@ $fechaprog=$_POST['fechaprog'];
      pg_query($query);
      }
      
-     if($tipotrabajador==12)
+     if($tipotrabajador==12 or $tipotrabajador==3)
      {}else{
      // ----- ACTUALIZAMOS EL SALDO DE LA CAJA  -----//
      //update tcaja set mfinal=mfinal+10 where idcaja='1';
@@ -90,12 +90,24 @@ $fechaprog=$_POST['fechaprog'];
      //$query="update tcuotas set estado='PAGADO', dmora='" . $dmora . "', vmora='" . $vmora . "' where ncuota='" . $ncuota . "' and nprestamo ='" . $cuenta . "';";
      $query="update tcuotas set estado='PAGADO', dmora='" . $dmora . "', vmora='" . $vmora . "', fpago='". $fecha ."' where ncuota='" . $ncuota . "' and nprestamo ='" . $cuenta . "';";
      pg_query($query);
+
+
+     // ----- VERIFICAMOS SI EXISTEN CUOTAS O NO POR PAGAR PARA CANCELAR PRESTAMO  -----//
+     //select max(ncuota) as cfinal from tcuotas where nprestamo='2000003' and sucursal='1';
+      $query = pg_query("select max(ncuota) as cfinal from tcuotas where nprestamo='". $cuenta ."' and sucursal='". $sucursal ."';");
+      $registros = pg_fetch_array($query, null, PGSQL_ASSOC);
+      $cfinal=$registros[cfinal];
+      if($cfinal==$ncuota){
+         $query="update tprestamo set estado='CANCELADO' where nprestamo='". $cuenta ."' and sucursal='". $sucursal ."';";
+         pg_query($query);
+      }
+
      if($monto==0){
       $vuelto=0;
      }else{
      $vuelto=$monto-$vcuota;
      }
-     $phptoajax[0]="EL PAGO DE CUOTA SE REGISTRO CORRECTAMENTE. EL VUELTO ES DE: ".$vuelto;
+     $phptoajax[0]="EL  PAGO  DE  LA  CUOTA  SE  REALIZO  CORRECTAMENTE.  EL VUELTO ES DE: S/.".$vuelto;
      $phptoajax[1]=$nmovimiento;
      $phptoajax[2]="C";
      echo json_encode($phptoajax);

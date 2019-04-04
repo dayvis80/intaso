@@ -27,6 +27,7 @@ if($tipo=='INS'){
 	$usuario=$_POST['usuario'];
 	$contrasena=$_POST['contrasena'];
 	$idtrabajador=$_POST['idtrabajador'];
+	$sucursal=$_SESSION[sucursal];
 
 	//select * from tusuario where idtrabajador=1;
 	$query = pg_query("select * from tusuario where idtrabajador=".$idtrabajador.";");
@@ -44,13 +45,15 @@ if($tipo=='INS'){
 	//insert into tusuario (usuario,contrasena,clave,idtrabajador) values ('Dayvis','D1440669','','1');
 
 	$query = "insert into tusuario (idusuario, usuario, contrasena, clave, idtrabajador) values ('".$idtrabajador."','".$usuario."','". $hash ."','". $salt  ."','". $idtrabajador ."');";
-
 	pg_query($query);
 
-	echo "EL USUARIO SE REGISTRO CORRECTAMENTE";
+	$query = "update ttrabajador set usuario='". $usuario ."' where idtrabajador='". $idtrabajador ."' and sucursal='". $sucursal ."';";
+	pg_query($query);
+
+	echo "EL USUARIO DEL TRABAJADOR SE REGISTRO CORRECTAMENTE";
 
 	}else {
-	echo "Este Trabajador ya registro su usuario";
+	echo "ESTE TRABAJADOR YA TIENE RESGISTRADO SU USUARIO";
 	}
 }
 

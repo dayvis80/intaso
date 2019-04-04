@@ -13,11 +13,14 @@ $sucursal=$_SESSION['sucursal'];
 if($tipo=='DATA'){
   $filtrado=$_POST['filtrado'];
   //  select tc.idcaja as n, tc.trabajador as id, concat(tt.nombres,' ',tt.apaterno,' ',tt.amaterno) as cajero, concat(tc.fapertura,'  ',tc.hapertura) as apertura, concat(tc.fcierre,' ',tc.hcierre) as cierre, tc.minicial as minicial, tc.mfinal as mfinal, tc.abierto as abierto from tcaja as tc, ttrabajador as tt where tc.trabajador=tt.idtrabajador and tc.sucursal='1' order by fapertura;
-  if($filtrado=='V1'){
-  $query = pg_query("select tc.idcaja as n, tc.trabajador as id, concat(tt.nombres,' ',tt.apaterno,' ',tt.amaterno) as cajero, concat(tc.fapertura,'  ',tc.hapertura) as apertura, concat(tc.fcierre,' ',tc.hcierre) as cierre, tc.minicial as minicial, tc.mfinal as mfinal, tc.mcierre as mcierre, tc.abierto as abierto from tcaja as tc, ttrabajador as tt where tc.trabajador=tt.idtrabajador and fapertura >= now()::date-'1 month'::interval and tc.sucursal='".$sucursal."' order by n, fapertura desc;");
+  if($filtrado=='VS'){
+  $query = pg_query("select tc.idcaja as n, tc.trabajador as id, concat(tt.nombres,' ',tt.apaterno,' ',tt.amaterno) as cajero, concat(tc.fapertura,'  ',tc.hapertura) as apertura, concat(tc.fcierre,' ',tc.hcierre) as cierre, tc.minicial as minicial, tc.mfinal as mfinal, tc.mcierre as mcierre, tc.abierto as abierto from tcaja as tc, ttrabajador as tt where tc.trabajador=tt.idtrabajador and fapertura >= now()::date-'1 week'::interval and tc.sucursal='".$sucursal."' order by fapertura desc;");
+  }
+  if($filtrado=='VM'){
+  $query = pg_query("select tc.idcaja as n, tc.trabajador as id, concat(tt.nombres,' ',tt.apaterno,' ',tt.amaterno) as cajero, concat(tc.fapertura,'  ',tc.hapertura) as apertura, concat(tc.fcierre,' ',tc.hcierre) as cierre, tc.minicial as minicial, tc.mfinal as mfinal, tc.mcierre as mcierre, tc.abierto as abierto from tcaja as tc, ttrabajador as tt where tc.trabajador=tt.idtrabajador and fapertura >= now()::date-'1 month'::interval and tc.sucursal='".$sucursal."' order by fapertura desc;");
   }
   if($filtrado=='VT'){
-  $query = pg_query("select tc.idcaja as n, tc.trabajador as id, concat(tt.nombres,' ',tt.apaterno,' ',tt.amaterno) as cajero, concat(tc.fapertura,'  ',tc.hapertura) as apertura, concat(tc.fcierre,' ',tc.hcierre) as cierre, tc.minicial as minicial, tc.mfinal as mfinal, tc.mcierre as mcierre, tc.abierto as abierto from tcaja as tc, ttrabajador as tt where tc.trabajador=tt.idtrabajador and tc.sucursal='".$sucursal."' order by n, fapertura desc;");
+  $query = pg_query("select tc.idcaja as n, tc.trabajador as id, concat(tt.nombres,' ',tt.apaterno,' ',tt.amaterno) as cajero, concat(tc.fapertura,'  ',tc.hapertura) as apertura, concat(tc.fcierre,' ',tc.hcierre) as cierre, tc.minicial as minicial, tc.mfinal as mfinal, tc.mcierre as mcierre, tc.abierto as abierto from tcaja as tc, ttrabajador as tt where tc.trabajador=tt.idtrabajador and tc.sucursal='".$sucursal."' order by fapertura desc;");
   }
   $tregistros = pg_numrows($query);
 
@@ -28,11 +31,34 @@ if($tipo=='DATA'){
   echo json_encode($data);
 }
 
+
+if($tipo=='BILL'){
+  $filtrado=$_POST['filtrado'];
+  //  select tc.idcaja as n, tc.trabajador as id, concat(tt.nombres,' ',tt.apaterno,' ',tt.amaterno) as cajero, concat(tc.fapertura,'  ',tc.hapertura) as apertura, concat(tc.fcierre,' ',tc.hcierre) as cierre, tc.minicial as minicial, tc.mfinal as mfinal, tc.abierto as abierto from tcaja as tc, ttrabajador as tt where tc.trabajador=tt.idtrabajador and tc.sucursal='1' order by fapertura;
+  if($filtrado=='VS'){
+  $query = pg_query("select tb.idbilletaje as id, tb.trabajador as idtrabajador, concat(tt.nombres,' ',tt.apaterno,' ',tt.amaterno) as cajero, tb.fbilletaje as fbilletaje, tb.stotal, concat(tb.freg,' ',tb.hreg) as fregistro from tbilletaje as tb, ttrabajador as tt where tb.trabajador=tt.idtrabajador and fbilletaje >= now()::date-'1 week'::interval and tb.sucursal='1' order by fbilletaje desc;");
+  }
+  if($filtrado=='VM'){
+  $query = pg_query("select tb.idbilletaje as id, tb.trabajador as idtrabajador, concat(tt.nombres,' ',tt.apaterno,' ',tt.amaterno) as cajero, tb.fbilletaje as fbilletaje, tb.stotal, concat(tb.freg,' ',tb.hreg) as fregistro from tbilletaje as tb, ttrabajador as tt where tb.trabajador=tt.idtrabajador and fbilletaje >= now()::date-'1 month'::interval and tb.sucursal='1' order by fbilletaje desc;");
+  }
+  if($filtrado=='VT'){
+  $query = pg_query("select tb.idbilletaje as id, tb.trabajador as idtrabajador, concat(tt.nombres,' ',tt.apaterno,' ',tt.amaterno) as cajero, tb.fbilletaje as fbilletaje, tb.stotal, concat(tb.freg,' ',tb.hreg) as fregistro from tbilletaje as tb, ttrabajador as tt where tb.trabajador=tt.idtrabajador and tb.sucursal='1' order by fbilletaje desc;");
+  }
+  $tregistros = pg_numrows($query);
+
+    for($i=1;$i<=$tregistros; $i++){
+      $registros = pg_fetch_array($query, null, PGSQL_ASSOC);
+      $data["data"][]=$registros;
+    }
+  echo json_encode($data);
+}
+
+
 //Obtiene el ultimo valor de cierre de caja.
 if($tipo=='MOCA'){
    $idcajero=trim($_POST['idcajero']);
    $sucursal= $_SESSION['sucursal'];
-   $query = pg_query("select mfinal, abierto from tcaja where fapertura=(select max(fapertura) from tcaja where trabajador='". $idcajero ."' and sucursal='". $sucursal ."') order by idcaja desc limit 1");
+   $query = pg_query("select mfinal, abierto from tcaja where fapertura=(select max(fapertura) from tcaja where trabajador='". $idcajero ."' and sucursal='". $sucursal ."') and trabajador='". $idcajero ."' order by idcaja desc limit 1");
    $registros = pg_fetch_array($query, null, PGSQL_ASSOC);
    $estado=$registros[abierto];
    $monto=$registros[mfinal];
@@ -85,7 +111,7 @@ if($tipo=='MOVS'){
    $query = pg_query("select concat(fapertura,' ',hapertura) as fapertura, concat(fcierre,' ',hcierre) as fcierre, abierto,minicial,mfinal,movimientos,mcierre from tcaja where idcaja='". $idcaja ."' and sucursal='".$sucursal."';");
    $registros = pg_fetch_array($query, null, PGSQL_ASSOC);
 
-   echo'<div id="dahocontenido" class="dpagina" style="display: block;">
+   echo'<div id="dcamovcontenido" class="dpagina" style="display: block;">
       <img src="../recursos/logoian.png"/>
       <hr>
       <br>
@@ -147,7 +173,7 @@ if($tipo=='MOVS'){
 
 //select concat(tm.flujomov,'-',lpad(tm.numeromov::text,8,'0')) as operacion, concat(tm.fechamov,' ',tm.horamov) as fecha, tm.cuenta, tm.descripcion, concat(ts.nombres,' ',ts.apaterno,' ',ts.amaterno) as socio, tm.moneda, tm.monto, CASE WHEN tm.tipomov='A' THEN 'AFILIACION'
 //            WHEN tm.tipomov='H' THEN 'APERTURA' WHEN tm.tipomov='D' THEN 'DEPOSITO' WHEN tm.tipomov='R' THEN 'RETIRO' WHEN tm.tipomov='P' THEN 'DESEMBOLSO' WHEN tm.tipomov='C' THEN 'PAGO CUOTA' ELSE 'NO EXISTE' END as movimiento, tm.anulado from tmovimiento as tm, tsocio as ts, tusuario as tu, tcaja as tc where tm.socio=ts.idsocio and tm.usuario=tu.idusuario and tm.idcaja=tc.idcaja and tm.idcaja='5' order by tm.numeromov
-   $query = pg_query("select concat(tm.flujomov,'-',lpad(tm.numeromov::text,8,'0')) as operacion, concat(tm.fechamov,' ',tm.horamov) as fecha, tm.cuenta, tm.descripcion, concat(ts.apaterno,' ',ts.amaterno,' ',ts.nombres) as socio, tm.socio as idsocio, tm.moneda, tm.monto, CASE WHEN tm.tipomov='A' THEN 'AFILIACION' WHEN tm.tipomov='H' THEN 'APERTURA' WHEN tm.tipomov='D' THEN 'DEPOSITO' WHEN tm.tipomov='R' THEN 'RETIRO' WHEN tm.tipomov='P' THEN 'DESEMBOLSO' WHEN tm.tipomov='C' THEN 'PAGO CUOTA' WHEN tm.tipomov='I' THEN 'INGRESO CAJA' WHEN tm.tipomov='E' THEN 'EGRESO CAJA' WHEN tm.tipomov='T' THEN 'PAGO TOTAL' ELSE 'NO EXISTE' END as movimiento, tm.anulado from tmovimiento as tm, tsocio as ts, ttrabajador as tt, tcaja as tc where tm.socio=ts.idsocio and tm.usuario=tt.idtrabajador and tm.idcaja=tc.idcaja and tm.idcaja='". $idcaja ."' and tm.sucursal='". $sucursal ."' order by tm.idmovimiento;");
+   $query = pg_query("select concat(tm.flujomov,'-',lpad(tm.numeromov::text,8,'0')) as operacion, concat(tm.fechamov,' ',tm.horamov) as fecha, tm.cuenta, tm.descripcion, concat(ts.apaterno,' ',ts.amaterno,' ',ts.nombres) as socio, tm.socio as idsocio, tm.moneda, tm.monto, tm.tipomov, CASE WHEN tm.tipomov='A' THEN 'AFILIACION' WHEN tm.tipomov='H' THEN 'APERTURA' WHEN tm.tipomov='D' THEN 'DEPOSITO' WHEN tm.tipomov='R' THEN 'RETIRO' WHEN tm.tipomov='P' THEN 'DESEMBOLSO' WHEN tm.tipomov='C' THEN 'PAGO CUOTA' WHEN tm.tipomov='I' THEN 'INGRESO CAJA' WHEN tm.tipomov='E' THEN 'EGRESO CAJA' WHEN tm.tipomov='T' THEN 'PAGO TOTAL' WHEN tm.tipomov='PI' THEN 'PAGO INTERES' ELSE 'NO EXISTE' END as movimiento, tm.anulado from tmovimiento as tm, tsocio as ts, ttrabajador as tt, tcaja as tc where tm.socio=ts.idsocio and tm.usuario=tt.idtrabajador and tm.idcaja=tc.idcaja and tm.idcaja='". $idcaja ."' order by tm.idmovimiento;");
 //select concat(tm.flujomov,'-',lpad(tm.numeromov::text,8,'0')) as operacion, concat(tm.fechamov,' ',tm.horamov) as fecha, tm.cuenta, tm.descripcion, concat(ts.apaterno,' ',ts.amaterno,' ',ts.nombres) as socio, tm.socio as idsocio, tm.moneda, tm.monto, CASE WHEN tm.tipomov='A' THEN 'AFILIACION' WHEN tm.tipomov='H' THEN 'APERTURA' WHEN tm.tipomov='D' THEN 'DEPOSITO' WHEN tm.tipomov='R' THEN 'RETIRO' WHEN tm.tipomov='P' THEN 'DESEMBOLSO' WHEN tm.tipomov='C' THEN 'PAGO CUOTA' WHEN tm.tipomov='I' THEN 'INGRESO CAJA' WHEN tm.tipomov='E' THEN 'EGRESO CAJA' WHEN tm.tipomov='T' THEN 'PAGO TOTAL' ELSE 'NO EXISTE' END as movimiento, tm.anulado from tmovimiento as tm, tsocio as ts, tusuario as tu, tcaja as tc where tm.socio=ts.idsocio and tm.usuario=tu.idusuario and tm.idcaja=tc.idcaja and tm.idcaja='". $idcaja ."' and tm.sucursal='". $sucursal ."' order by tm.idmovimiento;
    $tregistros = pg_numrows($query);
    $total=0;
@@ -172,7 +198,9 @@ if($tipo=='MOVS'){
          echo "<td>".$registros[anulado]."</td>";
       echo "</tr>";
       if($registros[anulado]=='NO'){
-      $total=$total+$registros[monto];
+         if($registros[tipomov]!='PI'){ 
+            $total=$total+$registros[monto];
+         }
       }
    }
    echo '<tr><td colspan="6" style="text-align:right">TOTAL:</td>
@@ -191,7 +219,19 @@ if($tipo=='NORE'){
    $idcaja=$_POST['idcaja'];
    $minicial=$_POST['minicial'];
    $estado=$_POST['abierto'];
+   $sucursal= $_SESSION['sucursal'];
+
    echo 'SE PROCEDERA A CERRAR CAJA<br><br>';
+   echo 'EL MONTO DE CIERRE ES DE:'; 
+   //select sum(monto) from tmovimiento where idcaja='69' and sucursal='1' and anulado='NO'
+   $query = pg_query("select sum(monto) as total from tmovimiento where idcaja='". $idcaja ."' and sucursal='". $sucursal ."' and anulado='NO';");
+   $registros = pg_fetch_array($query, null, PGSQL_ASSOC);
+   $total=$minicial+$registros[total];
+   if($total<0){
+   echo '<h2 style="color:red"> S/. ' . $total . '</h2><br>';
+   }else{
+   echo '<h2 style="color:blue"> S/. ' . $total . '</h2><br>';
+   }
    echo 'RELACION DE PROMOTORES QUE NO SE RECAUDO<br><br>';
    echo '<table id="tcuotas" class="tmdata">
    <tr>
@@ -239,7 +279,7 @@ $total=0;
   if ($caja == 'SI')
   {
 
-   $query = pg_query("select idmovimiento, monto, conciliado from tmovimiento where idcaja='".$idcaja."' and conciliado='NO' and anulado='NO' and sucursal='".$sucursal."';");
+   $query = pg_query("select idmovimiento, monto, conciliado from tmovimiento where idcaja='".$idcaja."' and conciliado='NO' and anulado='NO';");
    $tregistros = pg_numrows($query);
         
       for($i=1;$i<=$tregistros; $i++){
@@ -250,6 +290,7 @@ $total=0;
         $querya= pg_query("update tmovimiento set fconciliado='". $fecha ."', conciliado='SI' where idmovimiento='". $registros[idmovimiento] ."'");
       }
       $querya= pg_query("update tcaja set fcierre='". $fecha ."', hcierre='". $hora ."', movimientos='". $tregistros ."', mcierre='". $total ."', abierto='NO' where idcaja='". $idcaja ."'");
+      $queryu= pg_query("update tcaja set mfinal=minicial+mcierre where idcaja='". $idcaja ."';");
       echo 'LA CAJA SE CERRO SATISFACTORIAMENTE: MONTO S/.'. number_format($total,2,".","");
   }else{
     echo 'La Caja se Encuentra Cerrada';
@@ -316,6 +357,43 @@ if(($tipotrabajador==5) or ($tipotrabajador==10)){
   }  
 }
 }
+
+//REGISTRAMOS EL BILLETAJE DEL DIA
+if($tipo=='GUAB'){
+$idtrabajador=$_POST['idtrabajador'];
+$fbilletaje=$_POST['fbilletaje'];
+$s200=$_POST['s200'];
+$s100=$_POST['s100'];
+$s50=$_POST['s50'];
+$s20=$_POST['s20'];
+$s10=$_POST['s10'];
+$s5=$_POST['s5'];
+$s2=$_POST['s2'];
+$s1=$_POST['s1'];
+$s050=$_POST['s050'];
+$s020=$_POST['s020'];
+$s010=$_POST['s010'];
+$stotal=$_POST['stotal'];
+$bobservaciones==$_POST['bobservaciones'];
+//$total=$_POST['total'];
+$tipotrabajador=$_SESSION['tipotrabajador'];
+$fecha = date("Y-m-d");
+$hora = date("H:i:s"); 
+$usuario=$_SESSION['idtrabajador'];
+$sucursal=$_SESSION['sucursal'];
+
+  $query=pg_query("select idbilletaje from tbilletaje where trabajador='". $idtrabajador ."' and fbilletaje='". $fbilletaje ."'");
+  $tregistros=pg_num_rows($query);
+  if($tregistros>=1){
+    echo 'EL BILLETAJE DE FECHA '. $fbilletaje .' YA SE ENCUENTRA REGISTRADO';
+  }else{
+    $query=pg_query("insert into tbilletaje (trabajador, fbilletaje, s200, s100, s50, s20, s10, s5, s2, s1, s050, s020, s010, stotal, observaciones, freg, hreg, usuario, sucursal) 
+    values ('". $idtrabajador ."','". $fbilletaje ."','". $s200 ."','". $s100 ."','". $s50 ."','". $s20 ."','". $s10 ."','". $s5 ."','". $s2 ."','". $s1 ."','". $s050 ."','". $s020 ."','". $s010 ."','". $stotal ."','". $bobservaciones ."','". $fecha ."','". $hora ."','". $usuario ."','". $sucursal ."')");
+    echo 'EL REGISTRO DEL BILLETAJE SE GUARDO EXITOSAMENTE';
+  }
+
+}
+
 
 pg_free_result($query);
 pg_close($BD_conexion);

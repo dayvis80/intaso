@@ -44,7 +44,7 @@ if($tipo=='ANUL'){
 if($fconciliado==null){
    if($tipomov=='A'){
       //Restamo el monto de afiliacion de la cuenta de la caja
-      $query="update tcaja set mfinal=mfinal-". $monto ." where idcaja='" . $idcaja . "';";
+      $query="update tcaja set mfinal=mfinal-'". $monto ."' where idcaja='" . $idcaja . "';";
       pg_query($query);
       // Marcamos el movimiento como Anulado.
       $query="update tmovimiento set anulado='SI', fconciliado='". $fanulacion ."' where idmovimiento='". $idmov ."';";
@@ -59,10 +59,10 @@ if($fconciliado==null){
    // ANULAMOS MOVIMIENTOS DE APERTURA
    if($tipomov=='H'){
       //Restamo el monto de afiliacion de la cuenta de la caja
-      $query="update tcaja set mfinal=mfinal-". $monto ." where idcaja='" . $idcaja . "';";
+      $query="update tcaja set mfinal=mfinal-'". $monto ."' where idcaja='" . $idcaja . "';";
       pg_query($query);
       //Marcamos el movimiento como Anulado.
-      $query="  update tmovimiento set anulado='SI', fconciliado='". $fanulacion ."' where idmovimiento='". $idmov ."';";
+      $query="update tmovimiento set anulado='SI', fconciliado='". $fanulacion ."' where idmovimiento='". $idmov ."';";
       pg_query($query);          
 
       //Eliminamos la cuenta de ahorro aperturada
@@ -75,10 +75,10 @@ if($fconciliado==null){
    // ANULAMOS MOVIMIENTOS DE DEPOSITO
    if($tipomov=='D'){
       //Restamo el monto de afiliacion de la cuenta de la caja
-      $query="update tcaja set mfinal=mfinal-". $monto ." where idcaja='" . $idcaja . "';";
+      $query="update tcaja set mfinal=mfinal-'". $monto ."' where idcaja='" . $idcaja . "';";
       pg_query($query);
       //Marcamos el movimiento como Anulado.
-      $query="  update tmovimiento set anulado='SI', fconciliado='". $fanulacion ."' where idmovimiento='". $idmov ."';";
+      $query="update tmovimiento set anulado='SI', fconciliado='". $fanulacion ."' where idmovimiento='". $idmov ."';";
       pg_query($query);
       // Restamos el Saldo de la cuenta de Ahorro.
       $query="update tahorro set saldo=saldo-'" . $monto . "' where cuenta='" . $cuenta . "';";
@@ -90,10 +90,10 @@ if($fconciliado==null){
    // ANULAMOS MOVIMIENTOS DE RETIRO
    if($tipomov=='R'){
       //Restamo el monto de afiliacion de la cuenta de la caja
-      $query="update tcaja set mfinal=mfinal+". $monto*(-1) ." where idcaja='" . $idcaja . "';";
+      $query="update tcaja set mfinal=mfinal+'". $monto*(-1) ."' where idcaja='" . $idcaja . "';";
       pg_query($query);
       //Marcamos el movimiento como Anulado.
-      $query="  update tmovimiento set anulado='SI', fconciliado='". $fanulacion ."' where idmovimiento='". $idmov ."';";
+      $query="update tmovimiento set anulado='SI', fconciliado='". $fanulacion ."' where idmovimiento='". $idmov ."';";
       pg_query($query);
       // Restamos el Saldo de la cuenta de Ahorro.
       $query="update tahorro set saldo=saldo+'" . $monto*(-1) . "' where cuenta='" . $cuenta . "';";
@@ -110,12 +110,12 @@ if($fconciliado==null){
 
        if($registros[total]==0){
           //Restamo el monto de afiliacion de la cuenta de la caja
-          $query="update tcaja set mfinal=mfinal+". $monto*(-1) ." where idcaja='" . $idcaja . "';";
+          $query="update tcaja set mfinal=mfinal+'". $monto*(-1) ."' where idcaja='" . $idcaja . "';";
           pg_query($query);
           //Marcamos el movimiento como Anulado.
-          $query="  update tmovimiento set anulado='SI', fconciliado='". $fanulacion ."' where idmovimiento='". $idmov ."';";
+          $query="update tmovimiento set anulado='SI', fconciliado='". $fanulacion ."' where idmovimiento='". $idmov ."';";
           pg_query($query);
-          //Regresamos el prestamo a la Bandeja de Desembolso.
+          //Anulamos el prestamo a la Bandeja de Desembolso.
           $query = "update tprestamo set aprobado='NO', estado='ANULADO' where nprestamo='".$cuenta."';";
           pg_query($query);
           //Eliminamos la cuotas del Desembolso.
@@ -132,10 +132,10 @@ if($fconciliado==null){
    // ANULAMOS MOVIMIENTOS DE PAGO DE CUOTA
    if($tipomov=='C'){
       //Restamo el monto de afiliacion de la cuenta de la caja
-      $query="update tcaja set mfinal=mfinal-". $monto ." where idcaja='" . $idcaja . "';";
+      $query="update tcaja set mfinal=mfinal-'". $monto ."' where idcaja='" . $idcaja . "';";
       pg_query($query);
       //Marcamos el movimiento como Anulado.
-      $query="  update tmovimiento set anulado='SI', fconciliado= '". $fanulacion ."' where idmovimiento='". $idmov ."';";
+      $query="update tmovimiento set anulado='SI', fconciliado= '". $fanulacion ."' where idmovimiento='". $idmov ."';";
       pg_query($query);
 
       $query="update tcuotas set estado='PENDIENTE', dmora=null, vmora=null where ncuota='" . $ncuota . "' and nprestamo ='" . $cuenta . "';";

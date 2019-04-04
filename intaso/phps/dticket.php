@@ -2,7 +2,7 @@
 
 session_start();
 include('configuracion.php');
-$conn = pg_connect("host=".$host." port=".$puerto." user=".$usuario." dbname=".$dbname." password=".$password." ");
+$conn = pg_connect("host=".$host." port=".$puerto." user=".$usuario." dbname=".$dbname." password=".$password);
 
 //$tipo=$_POST['tipo'];
 $tipomov=$_POST['tipomov'];
@@ -104,9 +104,14 @@ echo'<tr><td>MONTO: S/. '.number_format($mcuota,2,"."," ").'   ---   DÍAS MORA:
 		<tr><td>TOTAL: S/. '.number_format($monto,2,"."," ").'</td>
 	</tr>
 		<tr><td>----------------------------------------------</td>
-	</tr>
-		<tr><td>PROXIMA CUOTA: '.$pcuota.' - FECHA PAGO: '.$pfvencimiento.'</td>
 	</tr>';
+	if($tcuotas==$ncuota){
+        echo'<tr><td>GRACIAS POR CANCELAR SU PRESTAMO</td>
+	    </tr>';
+    }else{
+        echo'<tr><td>PROXIMA CUOTA: '.$pcuota.' - FECHA PAGO: '.$pfvencimiento.'</td>
+	    </tr>';		
+    }
 }
 
 

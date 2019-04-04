@@ -1,7 +1,7 @@
 <?php 
 session_start();
 include('configuracion.php');
-$conn = pg_connect("host=".$host." port=".$puerto." user=".$usuario." dbname=".$dbname." password=".$password." ");
+$BD_conn = pg_connect("host=".$host." port=".$puerto." user=".$usuario." dbname=".$dbname." password=".$password);
 
 date_default_timezone_set("America/Lima");
 $tipo=$_POST['tipo'];
@@ -65,7 +65,7 @@ if(($tipotrabajador==2) or ($tipotrabajador==3) or ($tipotrabajador==4) or ($tip
 
       // SE CREA LA CUENTA DE AHORRO.
       //insert into tahorro (idsocio, cuenta, descripcion, plazo, tem , moneda, fapertura, fvencimiento, saldo, estado, usuario, sucursal) values (1,'3000001','PLAZO FIJO', '12', '4','SOL','2018-07-20','2019-01-20' ,'1000','1',1)	;
-      $query="insert into tahorro (idsocio, cuenta, descripcion, plazo, tem , moneda, fapertura, fvencimiento, saldo, estado, usuario, sucursal, mapertura) values (" . $idsocio .",'" . $ncuenta . "','" . $tahorro . "','" . $plazo . "','" . $tem . "','" . $moneda . "','" . $fapertura . "','" . $fvencimiento . "','" . $monto . "','VIGENTE','" . $usuario . "','" . $sucursal . "','" . $monto . "')";
+      $query="insert into tahorro (idsocio, cuenta, descripcion, plazo, tem , moneda, fapertura, fvencimiento, saldo, estado, usuario, sucursal, mapertura,fpinteres) values (" . $idsocio .",'" . $ncuenta . "','" . $tahorro . "','" . $plazo . "','" . $tem . "','" . $moneda . "','" . $fapertura . "','" . $fvencimiento . "','" . $monto . "','VIGENTE','" . $usuario . "','" . $sucursal . "','" . $monto . "','". $fapertura ."')";
   	  $result =  pg_query($query);
 
       // ----- Buscamos el ultimo número de movimiento y sumamos uno para el nuevo numero de prestamo
@@ -116,7 +116,7 @@ if($tipo=='EXTR'){
    $query = pg_query("select ts.idsocio, ts.numerodoc, concat(ts.nombres,' ',ts.apaterno,' ',ts.amaterno) as socio, ts.direccion, ta.descripcion, ta.plazo, ta.tem, ta.mapertura, ta.moneda, ta.fapertura, ta.fvencimiento from tahorro as ta, tsocio as ts where ts.idsocio=ta.idsocio and ta.cuenta='".$ncuenta."' and ta.sucursal='". $sucursal ."';");
    $registros = pg_fetch_array($query, null, PGSQL_ASSOC);
 
-   echo'<div id="dahocontenido" class="dpagina" style="display: block;">
+   echo'<div id="dcaextracto" class="dpagina" style="display: block;">
       <img src="../recursos/logoian.png"/>
       <hr>
       <br>
@@ -179,19 +179,20 @@ if($tipo=='EXTR'){
       </tr>';
 
 //select idmovimiento, numeromov, monto, moneda, fechamov, horamov, saldo , tipomov from tmovimiento where cuenta='30000001' order by fechamov, idmovimiento
-   $query = pg_query("select idmovimiento, numeromov, monto, moneda, fechamov, horamov, saldo , tipomov from tmovimiento where cuenta='".$ncuenta."' and anulado='NO' and sucursal='".$sucursal."' order by idmovimiento, fechamov");
+   $query = pg_query("select idmovimiento, numeromov, monto, moneda, fechamov, horamov, saldo , tipomov from tmovimiento where cuenta='".$ncuenta."' and anulado='NO' order by idmovimiento, fechamov");
    $tregistros = pg_numrows($query);
 
    for($i=1;$i<=$tregistros;$i++){
       $registros = pg_fetch_array($query, null, PGSQL_ASSOC);
       echo "<tr>";
-         if($registros[tipomov]=='H'){
-          $mov='APERTURA';
+         if($registros[tipomov]=='H'){$mov='APERTURA';
           $voucher='E-'.str_pad($registros[numeromov],7,'0',STR_PAD_LEFT); }
          if($registros[tipomov]=='D'){$mov='DEPOSITO';
           $voucher='E-'.str_pad($registros[numeromov],7,'0',STR_PAD_LEFT); }
          if($registros[tipomov]=='R'){$mov='RETIRO';
           $voucher='S-'.str_pad($registros[numeromov],7,'0',STR_PAD_LEFT); }
+         if($registros[tipomov]=='PI'){$mov='INTERES';
+          $voucher=''; }
          echo "<td>".$i."</td>";
          echo "<td>".$voucher."</td>";
          echo "<td>S/. ".$registros[monto]."</td>";
@@ -225,32 +226,32 @@ $hora = date("H:i:s");
 $usuario=$_SESSION['idtrabajador'];
 $sucursal=$_SESSION['sucursal'];
 
-  if(($tipotrabajador==2) or ($tipotrabajador==3) or ($tipotrabajador==4) or ($tipotrabajador==5) or ($tipotrabajador==10) or ($tipotrabajador==12)){
+   if(($tipotrabajador==2) or ($tipotrabajador==3) or ($tipotrabajador==4) or ($tipotrabajador==5) or ($tipotrabajador==10) or ($tipotrabajador==12)){
   	//select tc.idcaja from tcaja as tc, ttipotrabajador as ttt, ttrabajador as tt where tc.abierto='SI' and tc.trabajador=tt.idtrabajador and tt.tipotrabajador=ttt.idtipotrabajador and ttt.idtipotrabajador='5' and tt.idtrabajador='2';
 	$query = "select tc.idcaja from tcaja as tc, ttipotrabajador as ttt, ttrabajador as tt where (ttt.idtipotrabajador='2' or ttt.idtipotrabajador='3' or ttt.idtipotrabajador='4' or ttt.idtipotrabajador='5' or ttt.idtipotrabajador='10') and tc.abierto='SI' and tc.trabajador=tt.idtrabajador and tt.tipotrabajador=ttt.idtipotrabajador and tt.idtrabajador='". $trabajador ."';";
 	$datos=pg_query($query);
 	$tregistros = pg_numrows($datos);
-    $registros = pg_fetch_array($datos, null, PGSQL_ASSOC);
-    $idcaja=$registros[idcaja];
+   $registros = pg_fetch_array($datos, null, PGSQL_ASSOC);
+   $idcaja=$registros[idcaja];
 
 	if(($tregistros == 1) or ($tipotrabajador==12)){
 
-     if($tipotrabajador==12)
-       {$idcaja=0; }
+      if($tipotrabajador==12)
+         {$idcaja=0; }
 
-  	  // ----- Buscamos el ultimo número de movimiento y sumamos uno para el nuevo numero de prestamo
-  	  $query = pg_query("select max(numeromov) as num from tmovimiento where flujomov='E' and sucursal='".$sucursal."';");
-  	  $tregistros = pg_numrows($query);
-  	  $registros = pg_fetch_array($query, null, PGSQL_ASSOC);
+  	   // ----- Buscamos el ultimo número de movimiento y sumamos uno para el nuevo numero de prestamo
+  	   $query = pg_query("select max(numeromov) as num from tmovimiento where flujomov='E';");
+  	   $tregistros = pg_numrows($query);
+  	   $registros = pg_fetch_array($query, null, PGSQL_ASSOC);
 
-  	  if($registros[num]==null){
-    	$nmovimiento=1;
-  	  }else{
-    	$nmovimiento=$registros[num]+1;
-  	  }
+  	   if($registros[num]==null){
+         $nmovimiento=1;
+  	   }else{
+    	   $nmovimiento=$registros[num]+1;
+  	   }
 
   	  // ----- Seleccionamos el Saldo de la Cuenta de ahorro
-  	  $query = pg_query("select saldo from tahorro where cuenta='".$cuenta."' and sucursal='".$sucursal."';");
+  	  $query = pg_query("select saldo from tahorro where cuenta='".$cuenta."';");
   	  $tregistros = pg_numrows($query);
   	  $registros = pg_fetch_array($query, null, PGSQL_ASSOC);
   	  $saldo = $registros[saldo]+$monto;
@@ -280,12 +281,12 @@ $sucursal=$_SESSION['sucursal'];
     $phptoajax[2]="D";
 	  echo json_encode($phptoajax);
 
-	}else{
-	echo '1';
-	}
-  }else{
-		echo '2';
-  }
+	  }else{
+	     echo '1';
+	  }
+   }else{
+	  echo '2';
+   }
 
 }
 
@@ -318,7 +319,7 @@ $sucursal=$_SESSION['sucursal'];
     	if($tregistros == 1){
 
   	  	  // ----- Buscamos el ultimo número de movimiento y sumamos uno para el nuevo numero de prestamo
-  	  	  $query = pg_query("select max(numeromov) as num from tmovimiento where flujomov='S' and sucursal='".$sucursal."';");
+  	  	  $query = pg_query("select max(numeromov) as num from tmovimiento where flujomov='S';");
   	  	  $tregistros = pg_numrows($query);
   	  	  $registros = pg_fetch_array($query, null, PGSQL_ASSOC);
   	  	  if($registros[num]==null){
@@ -389,7 +390,129 @@ if($tipo=='BLOQ'){
   }
 }
 
+
+//PAGO DE INTERES
+if($tipo=='INT'){
+
+$descripcion=$_POST['descripcion'];
+$mespago=$_POST['mespago'];
+$factual = date("d-m-Y");
+
+//$idsocio=$_POST['idsocio'];
+//$cuenta=$_POST['cuenta'];
+//$interes=$_POST['monto'];
+//$tahorro=$_POST['tahorro'];
+$tipotrabajador=$_SESSION['tipotrabajador'];
+$trabajador=$_SESSION['idtrabajador'];
+$fecha = date("Y-m-d");
+$hora = date("H:i:s"); 
+$usuario=$_SESSION['idtrabajador'];
+$sucursal=$_SESSION['sucursal'];
+
+  if(($tipotrabajador==1)){
+
+  //// Seleccionamos Una caja Aperturada
+  ////select tc.idcaja from tcaja as tc, ttipotrabajador as ttt, ttrabajador as tt where tc.abierto='SI' and tc.trabajador=tt.idtrabajador and tt.tipotrabajador=ttt.idtipotrabajador and ttt.idtipotrabajador='5' and tt.idtrabajador='2';
+  //$query = "select tc.idcaja from tcaja as tc, ttipotrabajador as ttt, ttrabajador as tt where (ttt.idtipotrabajador='2' or ttt.idtipotrabajador='3' or ttt.idtipotrabajador='4' or ttt.idtipotrabajador='5' or ttt.idtipotrabajador='10') and tc.abierto='SI' and tc.trabajador=tt.idtrabajador and tt.tipotrabajador=ttt.idtipotrabajador and tt.idtrabajador='". $trabajador ."';";
+  //$datos=pg_query($query);
+  //$tregistros = pg_numrows($datos);
+  //$registros = pg_fetch_array($datos, null, PGSQL_ASSOC);
+  $idcaja=1;//$registros[idcaja];
+
+  //if($tregistros == 1){
+
+     $querypi = pg_query("select ta.idahorro, ta.idsocio ,ta.cuenta,ta.plazo,ta.tem,ta.fapertura,ta.fvencimiento,ta.fpinteres from tahorro as ta where ta.descripcion like '". $descripcion ."' and ta.sucursal='1' order by ta.fapertura;");
+     $tregistrospi = pg_numrows($querypi);
+
+     for($i=1;$i<=$tregistrospi; $i++){
+        $registrospi = pg_fetch_array($querypi, null, PGSQL_ASSOC);
+        $cuenta=$registrospi[cuenta];
+        $idsocio=$registrospi[idsocio];
+        $tahorro=$descripcion;
+        list($pinteres,$udia)=cinteres($registrospi[fpinteres],$mespago,$cuenta,$registrospi[tem]);
+
+        // ----- Seleccionamos el Saldo de la Cuenta de ahorro
+        $query = pg_query("select saldo from tahorro where cuenta='".$cuenta."' and sucursal='".$sucursal."';");
+        $tregistros = pg_numrows($query);
+        $registros = pg_fetch_array($query, null, PGSQL_ASSOC);
+        $saldo = $registros[saldo]+number_format($pinteres,2,"."," ");
+
+        if($pinteres!=0){
+        // ----- REGISTRAMOS EL MOVIMIENTO  -----//
+        //insert into tmovimiento (idcaja,idtipomov,socio,cuenta,numeromov,moneda,monto,fmovimiento,hora,pago,conciliado,usuario,sucursal) values ('1','1','1','3000002','100001','SOL','20.00','2017-09-12','10:33:24','PUNTUAL','NO','1','1');
+        $nmovimiento='0';
+        $query = "insert into tmovimiento (idcaja,tipomov,socio,cuenta,descripcion,flujomov,numeromov,moneda,monto,saldo,fechamov,horamov,pago,conciliado,anulado,usuario,sucursal) values ('" . $idcaja . "','PI','". $idsocio ."','". $cuenta . "','". $tahorro ."','E','". $nmovimiento ."','SOL','". number_format($pinteres,2,"."," ") ."','". $saldo ."','". $fecha ."','". $hora ."','OK','NO','NO','" . $usuario ."','" . $sucursal . "');";
+        pg_query($query);
+        }        
+
+        // ----- ACTUALIZAMOS EL SALDO DE LA CUENTA DE AHORRO  -----//
+        //update tahorro set saldo=saldo+500 where cuenta='3000001';
+        if($registrospi[fpinteres]<$udia){
+        $query="update tahorro set saldo='" . $saldo . "', fpinteres='". $udia ."' where cuenta='" . $cuenta . "';";
+        pg_query($query);
+        }
+
+        // ----- ACTUALIZAMOS EL SALDO DE LA CAJA  -----//
+        //update tcaja set mfinal=mfinal+10 where idcaja='1';
+        //$query="update tcaja set mfinal=mfinal+". $monto ." where idcaja='" . $idcaja . "';";
+        //pg_query($query);
+    
+     }
+     $phptoajax[0]="EL PAGO DE INTERES SE REALIZO CORRECTAMENTE";
+     $phptoajax[1]="PI";
+     echo json_encode($phptoajax);
+
+     //}else{
+     //echo 1;
+     //}
+  }else{
+    echo 2;
+  }
+
+}
+
+
+//FUNCION PARA CALCULAR INTERESES
+function cinteres($finicial,$mespago,$cuenta,$tem){
+   $factual = date("d-m-Y");
+   $month = $mespago;//date('m');
+   $year = date('Y');
+   // Calcula el Primer dia del mes recibido
+   $pdia=date('Y-m-d', mktime(0,0,0, $month, 1, $year));
+   // Calcula el umtimo dia del mes recibido
+   $day = date("d", mktime(0,0,0, $month+1, 0, $year));
+   $udia=date('Y-m-d', mktime(0,0,0, $month, $day, $year));
+
+   $fecha1= new DateTime($udia);
+   $fecha2= new DateTime($finicial);
+   $diff = $fecha1->diff($fecha2);
+   $dias=floor($diff->days);
+   $dias=($dias+1);
+   
+   if($fecha2<$fecha1)
+   {
+      //$interes=((1+TEM)1/30) -1);
+      $interes=(pow((1+0.2),(1/30))-1)/100;
+      $total=0;
+   
+      for($i=1;$i<=$dias; $i++){
+      $mod_date = strtotime($finicial."+".$i."days");
+      $ffinal=date("Y-m-d",$mod_date);
+      //select idmovimiento, socio,cuenta, descripcion, numeromov,saldo,fechamov,horamov from tmovimiento where cuenta='30000540' and anulado='NO' and fechamov<'2018-10-01' order by fechamov desc, horamov desc LIMIT 1
+      $query = pg_query("select saldo,fechamov,horamov from tmovimiento where cuenta='". $cuenta ."' and anulado='NO' and fechamov<'". $ffinal ."' order by fechamov desc, horamov desc LIMIT 1");
+      //$tregistros = pg_numrows($query);
+      $registros = pg_fetch_array($query, null, PGSQL_ASSOC);
+      $total=$total+($registros[saldo]*$interes);
+      //$fec=$fec.$ffinal;
+      }
+   }else{
+      $total=0;
+   }
+
+   return array($total,$udia);
+}
+
 pg_free_result($query);
-pg_close($conn);
+pg_close($BD_conn);
 ?>
 
