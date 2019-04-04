@@ -21,7 +21,9 @@ var espanol={
    "oAria": {
       "sSortAscending":  ": Activar para ordenar la columna de manera ascendente",
       "sSortDescending": ": Activar para ordenar la columna de manera descendente"
-   }
+   },
+   "decimal": ".",
+   "thousands": " "
 };
 var dtlanguaje = espanol;
 var columna,dtcolumna,coldefinir,dtcoldefinir;
@@ -42,11 +44,9 @@ function cargardata(){
       "columnDefs": dtcoldefinir,
       "order": [[ 1, 'asc' ]],
       "sPaginationType": "full_numbers",
-      "dom" : dtdom,
       "language": dtlanguaje,
-      buttons: [
-            'csv', 'excel', 'pdf', 'print'
-        ]
+      "dom" : dtdom,
+      "buttons":['excel','csv','pdf']
    });
   
    dtable.on('order.dt search.dt', function() {
@@ -92,7 +92,11 @@ function rsocio(afiliado){
           { "targets": 9, "width": "240px" },
           { "targets": 10, "width": "80px" }];
     dtcoldefinir=coldefinir;
-    dtdom='<"toolbar"><Blf<t>ip>';
+    if(($('#ltipotrabajador').text()==1) || ($('#ltipotrabajador').text()==2) || ($('#ltipotrabajador').text()==5)){
+       dtdom='<"toolbar">lBfrtip';
+    }else{
+       dtdom='<"toolbar"><lf<t>ip>';
+    }
     dttoolbar='<button id="brsnuevo" class="bsistema"><img src="../recursos/bsocio.png"/><span>NUEVO</span></button>';
 }
 
@@ -128,7 +132,11 @@ function asocio(){
           { "targets": 9, "visible": false },
           { "targets": 10, "width": "80px" }];
     dtcoldefinir=coldefinir;
-    dtdom='<lf<t>ip>';
+    if(($('#ltipotrabajador').text()==1) || ($('#ltipotrabajador').text()==2) || ($('#ltipotrabajador').text()==5)){
+       dtdom='lBfrtip';
+    }else{
+       dtdom='<lf<t>ip>';
+    }    
     dttoolbar='';
 }
 
@@ -282,7 +290,11 @@ function adeposito(){
           { "targets": 12, "width": "60px" },
           { "targets": 13, "width": "80px" }];
     dtcoldefinir=coldefinir;
-    dtdom='<lf<t>ip>';
+    if(($('#ltipotrabajador').text()==1) || ($('#ltipotrabajador').text()==2) || ($('#ltipotrabajador').text()==5)){
+       dtdom='lBfrtip';
+    }else{
+       dtdom='<lf<t>ip>';
+    }
     dttoolbar='';
 }
 
@@ -323,7 +335,11 @@ function aretiro(){
           { "targets": 12, "width": "60px" },
           { "targets": 13, "width": "80px" }];
     dtcoldefinir=coldefinir;
-    dtdom='<lf<t>ip>';
+    if(($('#ltipotrabajador').text()==1) || ($('#ltipotrabajador').text()==2) || ($('#ltipotrabajador').text()==5)){
+       dtdom='<"toolbar">lBfrtip';
+    }else{
+       dtdom='<lf<t>ip>';
+    }
     dttoolbar='';
 }
 
@@ -386,6 +402,7 @@ function pextracto(){
           {"data":"tem"},
           {"data":"fecpago"},
           {"data":"ftermino"},
+          {"data":"estado"},
           {"defaultContent":"<button id='bpemostrar' class='bacciones'>EXTRACTO</button>"}];
     dtcolumna = columna;
     coldefinir=[{ "searchable": false, "orderable": false, "targets": 0, "width": "20px" },
@@ -399,9 +416,14 @@ function pextracto(){
           { "targets": 8, "width": "30px" },
           { "targets": 9, "width": "80px" },
           { "targets": 10, "width": "90px" },
-          { "targets": 11, "width": "80px" }];
+          { "targets": 11, "visible": false },
+          { "targets": 12, "width": "80px" }];
     dtcoldefinir=coldefinir;
-    dtdom='<lf<t>ip>';
+    if(($('#ltipotrabajador').text()==1) || ($('#ltipotrabajador').text()==2) || ($('#ltipotrabajador').text()==5) || ($('#ltipotrabajador').text()==10) || ($('#ltipotrabajador').text()==15)){
+       dtdom='lBfrtip';
+    }else{
+       dtdom='<lf<t>ip>';
+    }
     dttoolbar='';
 }
 
@@ -483,6 +505,35 @@ function pdesembolso(){
 }
 
 
+function cboveda(){
+    dturl="../phps/databoveda.php";
+    datos={
+          "tipo": "DATA"
+          };
+    dtdatos=datos;
+    columna=[{"data": null },
+          {"data":"idcaja"},
+          {"data":"cajero"},
+          {"data":"trabajador"},
+          {"data":"fecha"},
+          {"data":"efectivo"},
+          {"data":"abierto"},
+          {"defaultContent":"<button id='bcbhabilitar' class='bacciones'>HABILITAR</button>"}];
+    dtcolumna = columna;
+    coldefinir=[{ "searchable": false, "orderable": false, "targets": 0, "width": "20px" },
+          { "targets": 1, "visible": false },
+          { "targets": 2, "width": "280px" },
+          { "targets": 3, "visible": false },
+          { "targets": 4, "width": "120px" },
+          { "targets": 5, "width": "100px" },
+          { "targets": 6, "width": "80px" },
+          { "targets": 7, "width": "180px" }];
+    dtcoldefinir=coldefinir;
+    dtdom='<lf<t>ip>';
+    dttoolbar='';
+}
+
+
 function capertura(filtrado){
     dturl="../phps/datacaja.php";
     datos={
@@ -514,8 +565,46 @@ function capertura(filtrado){
           { "targets": 9, "width": "40px" },
           { "targets": 10, "width": "180px" }];
     dtcoldefinir=coldefinir;
-    dtdom='<"toolbar"><lf<t>ip>';
+    if(($('#ltipotrabajador').text()==1) || ($('#ltipotrabajador').text()==2) || ($('#ltipotrabajador').text()==5) || ($('#ltipotrabajador').text()==10)){
+       dtdom='<"toolbar">lBfrtip';
+    }else{
+       dtdom='<lf<t>ip>';
+    }
     dttoolbar='<button id="bcanuevo" class="bsistema"><img src="../recursos/bcaja.png"/><span>NUEVO</span></button>';
+}
+
+
+function cbilletaje(filtrado){
+    dturl="../phps/datacaja.php";
+    datos={
+          "tipo": "BILL",
+          "filtrado" : filtrado
+          };
+    dtdatos=datos;
+    columna=[{"data": null },
+          {"data":"id"},
+          {"data":"idtrabajador"},
+          {"data":"cajero"},
+          {"data":"fbilletaje"},
+          {"data":"stotal"},
+          {"data":"fregistro"},
+          {"defaultContent":"<button id='bcbdetalles' class='bacciones'>VER</button>"}];
+    dtcolumna = columna;
+    coldefinir=[{ "searchable": false, "orderable": false, "targets": 0, "width": "20px" },
+          { "targets": 1, "visible": false },
+          { "targets": 2, "visible": false },
+          { "targets": 3, "width": "280px" },
+          { "targets": 4, "width": "120px" },
+          { "targets": 5, "width": "100px" },
+          { "targets": 6, "width": "160px" },
+          { "targets": 7, "width": "140px" }];
+    dtcoldefinir=coldefinir;
+    if(($('#ltipotrabajador').text()==1) || ($('#ltipotrabajador').text()==2) || ($('#ltipotrabajador').text()==5) || ($('#ltipotrabajador').text()==10)){
+       dtdom='<"toolbar">lBfrtip';
+    }else{
+       dtdom='<lf<t>ip>';
+    }
+    dttoolbar='<button id="bcbregistrar" class="bsistema"><img src="../recursos/bcaja.png"/><span>REGISTRAR</span></button>';
 }
 
 
@@ -549,7 +638,11 @@ function cpagocuota(){
           { "targets": 9, "width": "50px" },
           { "targets": 10, "width": "80px" }];
     dtcoldefinir=coldefinir;
-    dtdom='<lf<t>ip>';
+    if(($('#ltipotrabajador').text()==1) || ($('#ltipotrabajador').text()==2) || ($('#ltipotrabajador').text()==5)){
+       dtdom='lBfrtip';
+    }else{
+       dtdom='<lf<t>ip>';
+    }
     dttoolbar='';
 }
 
@@ -586,6 +679,35 @@ function cpagototal(){
     dtcoldefinir=coldefinir;
     dtdom='<lf<t>ip>';
     dttoolbar='';
+}
+
+
+function ccajachica(){
+    dturl="../phps/datacajachica.php";
+    datos={
+          "tipo": "DATA"
+          };
+    dtdatos=datos;
+    columna=[{"data": null },
+          {"data":"idcajachica"},
+          {"data":"periodo"},
+          {"data":"monto"},
+          {"data":"saldo"},
+          {"data":"detalle"},
+          {"data":"estado"},
+          {"defaultContent":"<button id='bcccregistro' class='bacciones'>REGISTRAR E/I</button><button id='bcccmovimientos' class='bacciones'>MOVIMIENTOS</button><button id='bccccerrar' class='bacciones'>CERRAR</button>"}];
+    dtcolumna = columna;
+    coldefinir=[{ "searchable": false, "orderable": false, "targets": 0, "width": "20px" },
+          { "targets": 1, "visible": false },
+          { "targets": 2, "width": "150px" },
+          { "targets": 3, "width": "80px" },
+          { "targets": 4, "width": "80px" },
+          { "targets": 5, "width": "150px" },
+          { "targets": 6, "width": "80px" },
+          { "targets": 7, "width": "280px" }];
+    dtcoldefinir=coldefinir;
+    dtdom='<"toolbar"><lf<t>ip>';
+    dttoolbar='<button id="bcccnuevo" class="bsistema"><img src="../recursos/bnuevo.png"/><span>NUEVO</span></button>';
 }
 
 
@@ -727,23 +849,27 @@ function mtrabajador(){
           {"data":"celular"},
           {"data":"descripcion"},
           {"data":"registro"},
+          {"data":"agencia"},
           {"data":"estado"},
+          {"data":"sucursal"},
           {"defaultContent":"<button id='bmteditar' class='bacciones'>MODIFICAR</button><button id='bmteliminar' class='bacciones'>DAR BAJA</button>"}];
     dtcolumna = columna;
     coldefinir=[{ "searchable": false, "orderable": false, "targets": 0, "width": "20px" },
           { "targets": 1, "visible": false },
-          { "targets": 2, "width": "40px" },
+          { "targets": 2, "width": "35px" },
           { "targets": 3, "width": "200px" },
           { "targets": 4, "visible": false },
           { "targets": 5, "visible": false },
           { "targets": 6, "visible": false },
-          { "targets": 7, "width": "60px" },
+          { "targets": 7, "width": "55px" },
           { "targets": 8, "width": "100px" },
-          { "targets": 9, "width": "110px" },
-          { "targets": 10, "width": "60px" },
-          { "targets": 11, "width": "180px" }];
+          { "targets": 9, "width": "50px" },
+          { "targets": 10, "width": "55px" },
+          { "targets": 11, "width": "50px" },
+          { "targets": 12, "visible": false },
+          { "targets": 13, "width": "180px" }];
     dtcoldefinir=coldefinir;
-    dtdom='<"toolbar"><lf<t>ip>';
+    dtdom='<"toolbar">lBfrtip';
     dttoolbar='<button id="brtnuevo" class="bsistema"><img src="../recursos/btrabajador.png"/><span>NUEVO</span></button>';
 }
 
@@ -770,7 +896,7 @@ function musuario(){
           { "targets": 5, "width": "50px" },
           { "targets": 6, "width": "100px" }];
     dtcoldefinir=coldefinir;
-    dtdom='<"toolbar"><lf<t>ip>';
+    dtdom='<"toolbar">lBfrtip';
     dttoolbar='<button id="brunuevo" class="bsistema"><img src="../recursos/busuario.png"/><span>NUEVO</span></button>';
 }
 
@@ -838,6 +964,41 @@ function mtipoahorro(){
     dtcoldefinir=coldefinir;
     dtdom='<"toolbar"><lf<t>ip>';
     dttoolbar='<button id="brtanuevo" class="bsistema"><img src="../recursos/ahorro.png"/><span>NUEVO</span></button>';
+}
+
+
+function mccartera(){
+    dturl="../phps/dataprestamo.php";
+    datos={
+          "tipo": "CARTE",
+          "aprobado" : 'SI',
+          "estado" : 'EN PROCESO'
+          };
+    dtdatos=datos;
+    columna=[{"data": null },
+          {"data":"idprestamo"},
+          {"data":"idsocio"},
+          {"data":"socio"},
+          {"data":"nprestamo"},
+          {"data":"descripcion"},
+          {"data":"monto"},
+          {"data":"analista"},
+          {"data":"nanalista"},
+          {"defaultContent":"<button id='bmccartera' class='bacciones'>CAMBIAR</button>"}];
+    dtcolumna = columna;
+    coldefinir=[{ "searchable": false, "orderable": false, "targets": 0, "width": "20px" },
+          { "targets": 1, "visible": false },
+          { "targets": 2, "visible": false },
+          { "targets": 3, "width": "240px" },
+          { "targets": 4, "width": "50px" },
+          { "targets": 5, "width": "130px" },
+          { "targets": 6, "width": "50px" },
+          { "targets": 7, "visible": false },
+          { "targets": 8, "width": "210px" },
+          { "targets": 9, "width": "90px" }];
+    dtcoldefinir=coldefinir;
+    dtdom='<lf<t>ip>';
+    dttoolbar='';
 }
 
 
@@ -1013,6 +1174,14 @@ $('#omesocioafiliar').click(function(evento){
 });
 
 
+$('#omesocioactividad').click(function(evento){
+  evento.preventDefault();
+   $.post('socioactividad.php',function(data){
+      $('#paginas').html(data);
+   });
+});
+
+
 $('#omesociocertificado').click(function(evento){
   evento.preventDefault();
   $.post('sociocertificado.php',function(data){
@@ -1105,9 +1274,19 @@ $('#omecajadesembolso').click(function(evento){
 });
 
 
+$('#omecajaboveda').click(function(evento){
+  evento.preventDefault();
+  $.post('cajaboveda.php',function(data){
+    $('#paginas').html(data);
+    cboveda();
+    cargardata();
+  });
+});
+
+
 $('#omecajaapertura').click(function(evento){
   evento.preventDefault();
-  var filtrado='V1';
+  var filtrado='VS';
   $.post('cajaapertura.php',function(data){
     $('#paginas').html(data);
     capertura(filtrado);
@@ -1160,10 +1339,23 @@ $('#omecajarecaudar').click(function(evento){
 });
 
 
-$('#omecajabilletajed').click(function(evento){
+$('#omecajabilletaje').click(function(evento){
   evento.preventDefault();
+  var filtrado='VS';
   $.post('cajabilletaje.php',function(data){
     $('#paginas').html(data);
+    cbilletaje(filtrado);
+    cargardata();
+  });
+});
+
+
+$('#omecajacajachica').click(function(evento){
+  evento.preventDefault();
+  $.post('cajacajachica.php',function(data){
+    $('#paginas').html(data);
+    ccajachica();
+    cargardata();
   });
 });
 
@@ -1215,13 +1407,17 @@ $('#omecajaflujodetallado').click(function(evento){
 
 $('#omecajadevolaporteprestamo').click(function(evento){
   evento.preventDefault();
-  alert('OPCION CAJA DEVOLVER APROTES PRESTAMO');
+  swal('OPCION CAJA DEVOLVER APORTES PRESTAMO');
 });
 
 
-$('#omecajapagocapital').click(function(evento){
+$('#omecajapagointeres').click(function(evento){
   evento.preventDefault();
-  alert('OPCION CAJA PAGO CAPITAL');
+  $.post('cajapagointeres.php',function(data){
+     $('#paginas').html(data);
+//     cpagototal();
+//     cargardata();
+  });
 });
 
 
@@ -1244,10 +1440,24 @@ $('#omecajaduplicado').click(function(evento){
 
           //     FIN  OPCIONES  CAJA   //
           // INICIO OPCIONES REPORTES  //
+$('#omerepoprestamos').click(function(evento){
+  $.post('rptprestamos.php',function(data){
+    $('#paginas').html(data);
+  });
+});
+
 
 $('#omerepoproductividad').click(function(evento){
   evento.preventDefault();
   $.post('reporteproductividad.php',function(data){
+    $('#paginas').html(data);
+  });
+});
+
+
+$('#omereporecaudacion').click(function(evento){
+  evento.preventDefault();
+  $.post('rptrecaudar.php',function(data){
     $('#paginas').html(data);
   });
 });
@@ -1346,8 +1556,12 @@ $('#omemantetipoahorro').click(function(evento){
 
 
 $('#omemanteccartera').click(function(evento){
-  evento.preventDefault();
-  alert('Mantenimiento Cambio de Cartera');
+   evento.preventDefault();
+   $.post('manteccartera.php',function(data){
+      $('#paginas').html(data);
+      mccartera();
+      cargardata();
+   });
 });
 
 
@@ -1505,7 +1719,9 @@ function datosferiado(){
 // ------------------ FIN FUNCIONES PAGINA MENU ---------------------//
 //-------------------------------------------------------------------//
 // ---------------- INICIO FUNCIONES OPCIONES SOCIO -----------------//
-//Seleccionamos socios afiliados y no afiliados
+
+//INICIO DE FUNCIONES DE REGISTRO DE SOCIO
+//Combo que permite seleccionar entre socios afiliados SI-NO
 $('#central').on('change','#sropcafiliado',function(evento){ 
    var afiliado=$('#sropcafiliado').val();  
    $.post('socioregistrar.php',function(data){
@@ -1515,14 +1731,58 @@ $('#central').on('change','#sropcafiliado',function(evento){
   });
 });
 
+//REGISTRAR NUEVO SOCIO
 // Muestra ventana Modal para registrar nuevo socio
 $('#central').on('click','#brsnuevo',function(evento){ 
     document.getElementById('dmodsocionuevo').style.display='block';
 }); 
 
 
+$('#central').on('change','#arstipodoc',function(evento){ 
+
+   if( $('#arstipodoc').val() == 'RUC' ){
+      $('#arsnumerodoc').val('');
+      $('#arsnumerodoc').attr('maxlength', 11);
+      $('#arsapaterno').removeAttr("required");
+      $('#arsapaterno').attr('disabled', true);
+      $('#arsamaterno').removeAttr("required");
+      $('#arsamaterno').attr('disabled', true);
+      $('#lrsdresponsable').text('DATOS DEL REPRESENTANTE LEGAL');
+      $('#lrsnombre').text('RAZON SOCIAL:');
+      $('#lrsfnacimiento').text('FECHA DE CONSTITUCIÓN:');
+      $('#lrsocupacion').text('RUBRO O ACTIVIDAD:');
+      $('#arscdni').prop("required", true);
+      $('#arscapaterno').prop("required", true);
+      $('#arscamaterno').prop("required", true);
+      $('#arscnombres').prop("required", true);
+   }else{
+      $('#arsnumerodoc').val('');
+      $('#arsnumerodoc').attr('maxlength', 8);
+      $('#arsapaterno').prop("required", true);
+      $('#arsapaterno').attr('disabled', false);
+      $('#arsamaterno').prop("required", true);
+      $('#arsamaterno').attr('disabled', false);
+      $('#lrsdresponsable').text('DATOS DEL CONYUGE');
+      $('#lrsnombre').text('NOMBRES:');
+      $('#lrsfnacimiento').text('FECHA DE NACIMIENTO:');
+      $('#lrsocupacion').text('OCUPACION:');
+      $('#arscdni').removeAttr("required");
+      $('#arscapaterno').removeAttr("required");
+      $('#arscamaterno').removeAttr("required");
+      $('#arscnombres').removeAttr("required");
+   }
+});
+
+
+// Boton para Guardar o Registrar nuevo socio
 $('#central').on('click','#bmodrsguardar',function(evento){ 
-  var blanco = ($('#arsnumerodoc').val()).length * ($('#arsapaterno').val()).length * ($('#arsamaterno').val()).length * ($('#arsnombres').val()).length * ($('#arsfnacimiento').val()).length * ($('#arstcelular').val()).length * ($('#arsocupacion').val()).length * ($('#arsdepartamento').val()).length * ($('#arsprovincia').val()).length * ($('#arsdistrito').val()).length * ($('#arsdireccion').val()).length * ($('#arsdireccion').val()).length * ($('#arsrdomicilio').val()).length * ($('#arsafiliacion').val()).length;
+
+   if( $('#arstipodoc').val() == 'RUC' ){
+     var blanco = ($('#arsnumerodoc').val()).length * ($('#arsnombres').val()).length * ($('#arsfnacimiento').val()).length * ($('#arstcelular').val()).length * ($('#arsocupacion').val()).length * ($('#arsdepartamento').val()).length * ($('#arsprovincia').val()).length * ($('#arsdistrito').val()).length * ($('#arsdireccion').val()).length * ($('#arsdireccion').val()).length * ($('#arsrdomicilio').val()).length * ($('#arsafiliacion').val()).length * ($('#arscdni').val()).length * ($('#arscapaterno').val()).length * ($('#arscamaterno').val()).length * ($('#arscnombres').val()).length;
+   }else{
+     var blanco = ($('#arsnumerodoc').val()).length * ($('#arsapaterno').val()).length * ($('#arsamaterno').val()).length * ($('#arsnombres').val()).length * ($('#arsfnacimiento').val()).length * ($('#arstcelular').val()).length * ($('#arsocupacion').val()).length * ($('#arsdepartamento').val()).length * ($('#arsprovincia').val()).length * ($('#arsdistrito').val()).length * ($('#arsdireccion').val()).length * ($('#arsdireccion').val()).length * ($('#arsrdomicilio').val()).length * ($('#arsafiliacion').val()).length;
+   }
+
   if(blanco>0) {
       var datos='tipo=INS'+'&tipodoc='+$('#arstipodoc').val()+'&numerodoc='+$('#arsnumerodoc').val()+'&apaterno='+$('#arsapaterno').val()+'&amaterno='+$('#arsamaterno').val()+'&nombres='+$('#arsnombres').val()+'&nhijos='+$('#arsnhijos').val()+'&ecivil='+$('#arsecivil').val()+'&sexo='+$('#arssexo').val()+'&fnacimiento='+$('#arsfnacimiento').val()+'&tcelular='+$('#arstcelular').val()+'&temergencia='+$('#arstemergencia').val()+'&email='+$('#arsemail').val()+'&ocupacion='+$('#arsocupacion').val()+'&departamento='+$('#arsdepartamento').val()+'&provincia='+$('#arsprovincia').val()+'&distrito='+$('#arsdistrito').val()+'&direccion='+$('#arsdireccion').val()+'&tvivienda='+$('#arstvivienda').val()+'&mconstruccion='+$('#arsmconstruccion').val()+'&rdomicilio='+$('#arsrdomicilio').val()+'&utrabajo='+$('#arsutrabajo').val()+'&rtrabajo='+$('#arsrtrabajo').val()+'&cdni='+$('#arscdni').val()+'&capaterno='+$('#arscapaterno').val()+'&camaterno='+$('#arscamaterno').val()+'&cnombres='+$('#arscnombres').val()+'&analista='+$('#arsanalista').val()+'&afiliacion='+$('#arsafiliacion').val();
 
@@ -1531,7 +1791,7 @@ $('#central').on('click','#bmodrsguardar',function(evento){
       type: "POST",
       data: datos,
       success: function(valor) {
-          alert(valor);
+          swal(valor);
           $.post('socioregistrar.php',function(data){
             $('#paginas').html(data);
             var afiliado='NO';
@@ -1542,11 +1802,11 @@ $('#central').on('click','#bmodrsguardar',function(evento){
       }
     });
   }else{
-    alert("Existen campos Obligatorios en blanco");
+    swal("EXISTEN CAMPOS OBLIGATORIOS EN BLANCO");
   }
 });
 
-
+//Boton para Cerrar ventana modal de Registro de Socio
 $('#central').on('click','#bmodrscerrar',function(evento){ 
   document.getElementById('dmodsocionuevo').style.display='none';
 });
@@ -1628,7 +1888,8 @@ $('#central').on('click','#bmodrsmcerrar',function(evento){
 // SOCIO AFILIAR
 $('#central').on('click','#bsaafiliar',function(evento){ 
   var data = dtable.row( $(this).parents("tr") ).data();
-  $('#lansocio').text(data['socio']+'  '+data['tipo']);
+  $('#lansocio').text(data['socio']);
+  $('#lantipo').text(data['tipo']+' ');
   $('#landni').text(data['dni']);
   $('#lanmonto').text(data['afiliacion']);
   $('#lanidsocio').text(data['id']);
@@ -1644,7 +1905,7 @@ $('#central').on('click','#bmodsaafiliar',function(evento){
       data: datos,
       success: function(valor) {
           if(valor=='2'){
-            alert('UD NO ES UN USUARIO CON FACULTADES PARA REALIZAR COBROS');
+            swal('UD NO ES UN USUARIO CON FACULTADES PARA REALIZAR COBROS');
             document.getElementById('dmodsocioafiliar').style.display='none';
           }else{
             if(valor=='1'){
@@ -1734,10 +1995,10 @@ $('#central').on('click','#banbuscarsocio',function(evento){
       data: datos,
       success: function(valor) {
           if(valor=='ESTE SOCIO NO SE ENCUENTRA REGISTRADO'){
-            alert(valor);
+            swal(valor);
           }
           if(valor=='ESTE SOCIO NO SE ENCUENTRA AFILIADO'){
-            alert(valor);
+            swal(valor);
           }
           arreglo = JSON.parse(valor);
           $('#aansocio').val(arreglo[0].socio);
@@ -1748,7 +2009,7 @@ $('#central').on('click','#banbuscarsocio',function(evento){
     });
   }else
   {
-    alert("Existen campos en blanco");
+    swal("DEBE INGRESAR UN DNI PARA BUSCAR AL SOCIO");
   }
 });
 
@@ -1756,11 +2017,11 @@ $('#central').on('click','#banbuscarsocio',function(evento){
 $('#central').on('click','#bangenerar',function(evento){ 
    var blanco= ($('#aanidsocio').val()).length * ($('#aantem').val()).length * ($('#aanplazo').val()).length * ($('#aanmoneda').val()).length * ($('#aanmonto').val()).length;
    if(blanco>0) {
-      var val=$('#aanidsocio').val()+'&'+$('#aandni').val()+'&'+$('#aansocio').val()+'&'+$('#aandireccion').val()+'&'+$('#aantipoahorro option:selected').text()+'&'+$('#aantem').val()+'&'+$('#aanplazo').val()+'&'+$('#aanmoneda').val()+'&'+$('#aanmonto').val();
-      var datos={ "idsocio": $('#aanidsocio').val(),"dni": $('#aandni').val(),"socio": $('#aansocio').val(),"direccion": $('#aandireccion').val(),"tahorro": $('#aantipoahorro option:selected').text(),"tem": $('#aantem').val(),"plazo":$('#aanplazo').val(),"moneda": $('#aanmoneda').val(),"monto": $('#aanmonto').val() };
-      var dtdatos=datos;
+         var val=$('#aanidsocio').val()+'&'+$('#aandni').val()+'&'+$('#aansocio').val()+'&'+$('#aandireccion').val()+'&'+$('#aantipoahorro option:selected').text()+'&'+$('#aantem').val()+'&'+$('#aanplazo').val()+'&'+$('#aanmoneda').val()+'&'+$('#aanmonto').val();
+         var datos={ "idsocio": $('#aanidsocio').val(),"dni": $('#aandni').val(),"socio": $('#aansocio').val(),"direccion": $('#aandireccion').val(),"tahorro": $('#aantipoahorro option:selected').text(),"tem": $('#aantem').val(),"plazo":$('#aanplazo').val(),"moneda": $('#aanmoneda').val(),"monto": $('#aanmonto').val() };
+         var dtdatos=datos;
   
-      $.post('ahorronuevo.php', dtdatos ,function(data){
+         $.post('ahorronuevo.php', dtdatos ,function(data){
          $('#paginas').html(data);
          var cadena = val,
          valores = cadena.split('&');
@@ -1776,16 +2037,19 @@ $('#central').on('click','#bangenerar',function(evento){
          $('#aanmonto').val(valores[8]);
          $("#tasocio").find("input,button,select,img,span").attr("disabled", "disabled");
          $("#taahorro").find("input,button,select").attr("disabled", "disabled");
-      });
-   }else{
-      alert("Faltan Datos para Generar el Prestamo");
-   }
+         });
+      }else
+      {
+         swal("FALTA INGRESAR DATOS PARA GENERAR EL PRESTAMO");
+      }
 });
 
 // Guardamos la cuenta de Ahorro previsualizada
 $('#central').on('click','#banguardar',function(evento){ 
   var blanco= ($('#aanidsocio').val()).length * ($('#aantem').val()).length * ($('#aanplazo').val()).length * ($('#aanmoneda').val()).length * ($('#aanmonto').val()).length;
     if(blanco>0) {
+      if($('#aanmonto').val()>=3)
+      {
       var datos='tipo=GUAR'+'&idsocio='+$('#aanidsocio').val()+'&dni='+$('#aandni').val()+'&socio='+$('#aansocio').val()+'&direccion='+$('#aandireccion').val()+'&tahorro='+$('#aantipoahorro option:selected').text()+'&tem='+$('#aantem').val()+'&plazo='+$('#aanplazo').val()+'&moneda='+$('#aanmoneda').val()+'&monto='+$('#aanmonto').val()+'&ncuenta='+$('#lanncuenta').text();
       var ncuenta=$('#lanncuenta').text();
       $.ajax({
@@ -1811,8 +2075,11 @@ $('#central').on('click','#banguardar',function(evento){
             }
         }
       });
+      }else{
+         swal("EL MONTO MINIMO PARA APERTURAR UNA CUENTA ES DE S/. 3.00 SOLES");
+      }
     }else{
-      alert("Faltan Datos para Generar el Prestamo");
+      swal("FALTAN DATOS PARA REALIZAR LA APERTURA DE LA NUEVA CUENTA DE AHORRO");
    }
 });
 
@@ -1833,6 +2100,18 @@ $('#central').on('click','#baextracto',function(evento){
 });
 
 
+//Imprime Extracto de Ahorro
+$('#central').on('click','#baextimprimir',function(evento){ 
+    var ficha = document.getElementById('dcaextracto');
+    var ventimp = window.open(' ', 'popimpr');
+    ventimp.document.write( ficha.innerHTML );
+    ventimp.document.close();
+    ventimp.print( );
+    ventimp.close();
+});
+
+
+//Cierra Extracto de Ahorro
 $('#central').on('click','#baextcerrar',function(evento){ 
    document.getElementById('dmodextractoahorro').style.display='none';
 });
@@ -1884,10 +2163,10 @@ $('#central').on('click','#bpnbuscarsocio',function(evento){
       data: datos,
       success: function(valor) {
           if(valor=='ESTE SOCIO NO SE ENCUENTRA REGISTRADO'){
-            alert(valor);
+            swal(valor);
           }
           if(valor=='ESTE SOCIO NO SE ENCUENTRA AFILIADO'){
-            alert(valor);
+            swal(valor);
           }
           arreglo = JSON.parse(valor);
           $('#apnsocio').val(arreglo[0].socio);
@@ -1898,7 +2177,7 @@ $('#central').on('click','#bpnbuscarsocio',function(evento){
     });
   }else
   {
-    alert("Existen campos en blanco");
+    swal("DEBE INGRESAR UN DNI PARA BUSCAR AL SOCIO");
   }
 });
 
@@ -2031,12 +2310,19 @@ $('#central').on('click','#bpemostrar',function(evento){
 });
 
 
-$('#central').on('click','#bpextcerrar',function(evento){ 
-   document.getElementById('dmodextractoprestamo').style.display='none';
+//Imprime Extracto de Prestamo
+$('#central').on('click','#bpextimprimir',function(evento){ 
+    var ficha = document.getElementById('dpextcontenido');
+    var ventimp = window.open(' ', 'popimpr');
+    ventimp.document.write( ficha.innerHTML );
+    ventimp.document.close();
+    ventimp.print( );
+    ventimp.close();
 });
 
-//Imprime Detalle del Prestamo
-$('#central').on('click','#bpextimprimir',function(evento){ 
+
+// Cerrar Extracto de Prestamo
+$('#central').on('click','#bpextcerrar',function(evento){ 
    document.getElementById('dmodextractoprestamo').style.display='none';
 });
 
@@ -2140,6 +2426,90 @@ $('#central').on('click','#bpndescerrar',function(evento){
 });
 
 
+//FUNCIONES DE BOVEDA DE CAJA
+//Muestra ventana de Habilitacion
+$('#central').on('click','#bcbhabilitar',function(evento){ 
+  var data = dtable.row( $(this).parents("tr") ).data();
+  if(data['abierto']=='SI'){
+     $('#lacbhidboveda').text($('#lacbidboveda').text());
+     $('#lacbhidcaja').text(data['idcaja']);
+     //$('#acccrdetalle').val(''); 
+     //$('#acccrmonto').val('');
+     //$('#acccrnumero').val('');
+     //$('#acccrobservaciones').val('');
+     document.getElementById('dmodbohabilitacion').style.display='block';
+   }else{
+     alert('LA CAJA SE ENCUENTRA CERRADA. NO SE PUEDEN REALIZAR MOVIMIENTOS');
+   }
+});
+
+
+//Registramos la Habilitacion
+$('#central').on('click','#bmodcbhaceptar',function(evento){ 
+ var blanco= ($('#acbhmonto').val()).length; // * ($('#acaminicial').val()).length;
+ //alert($('#acacajero').val());
+    if(blanco>0) {
+       var datos='tipo=HABI'+'&idboveda='+$('#lacbhidboveda').text()+'&idcaja='+$('#lacbhidcaja').text()+'&tipomov='+$('#acbhtipomov').val()+'&monto='+$('#acbhmonto').val();
+       $.ajax({
+          url: "../phps/databoveda.php",
+          type: "POST",
+          data: datos,
+          success: function(valor) {
+             alert(valor);
+             document.getElementById('dmodbohabilitacion').style.display='none';
+             //if(valor=='NO'){
+             //   alert('Ud. No puede Aperturar Caja. Porque ya tiene una Caja Abierta');
+             //   $('#acaminicial').val('');
+             //}else{
+             //   $('#acaminicial').val(valor);
+             //}
+          }
+       });
+    }else{
+      alert("Existen campo en blanco");
+   }
+});
+
+
+
+//Cerrramos ventana de habilitacion
+$('#central').on('click','#bmodcbhcerrar',function(evento){ 
+    document.getElementById('dmodbohabilitacion').style.display='none';
+    //alert($('#lcdnprestamo').html());
+});
+
+
+//Visualizar los movimientos de Boveda
+$('#central').on('click','#bcbovhistorial',function(evento){ 
+  var datos='tipo=MOVS'+'&idcajachica='+$('#lacbhidboveda').text();
+      $.ajax({
+        url: "../phps/databoveda.php",
+        type: "POST",
+        data: datos,
+        success: function(valor) {
+          $('#dbovedamov').html(valor);
+          document.getElementById('dmodbovedamov').style.display='block';
+        }
+      });
+});
+
+
+//Imprimir movimientos de Boveda
+$('#central').on('click','#bcbovmovimprimir',function(evento){ 
+    var ficha = document.getElementById('dcbmovcontenido');
+    var ventimp = window.open(' ', 'popimpr');
+    ventimp.document.write( ficha.innerHTML );
+    ventimp.document.close();
+    ventimp.print( );
+    ventimp.close();
+});
+
+//Cerramos la Ventana de Movimientos de Boveda
+$('#central').on('click','#bcbovmovcerrar',function(evento){ 
+    document.getElementById('dmodbovedamov').style.display='none';
+});
+
+
 //FUNCIONES DE APERTURA DE CAJA
 //Muestra la pestaña para aperturar una nueva caja
 $('#central').on('change','#cafilfapertura',function(evento){ 
@@ -2150,6 +2520,7 @@ $('#central').on('change','#cafilfapertura',function(evento){
       cargardata();
   });
 });
+
 
 $('#central').on('click','#bcanuevo',function(evento){
     $('#acaminicial').val(''); 
@@ -2188,7 +2559,7 @@ $('#central').on('click','#bmodcaguardar',function(evento){
         success: function(valor) {
             alert(valor);
             document.getElementById('dmodcajapertura').style.display='none';
-            capertura();
+            capertura('VS');
             cargardata();
         }
       });
@@ -2221,6 +2592,18 @@ $('#central').on('click','#bcamovimientos',function(evento){
 });
 
 
+//Imprime los movimientos del flujo de Caja
+$('#central').on('click','#bcamovimprimir',function(evento){ 
+    var ficha = document.getElementById('dcamovcontenido');
+    var ventimp = window.open(' ', 'popimpr');
+    ventimp.document.write( ficha.innerHTML );
+    ventimp.document.close();
+    ventimp.print( );
+    ventimp.close();
+});
+
+
+// Cierra la ventana de los movimientos de Flujo de Caja
 $('#central').on('click','#bcamovcerrar',function(evento){ 
     document.getElementById('dmodcajamov').style.display='none';
 });
@@ -2229,6 +2612,7 @@ $('#central').on('click','#bcamovcerrar',function(evento){
 //Muestra mensaje de Alerta de quienes no recaudaron
 $('#central').on('click','#bcacerrar',function(evento){ 
   var data = dtable.row( $(this).parents("tr") ).data();
+  if(data['abierto']=='SI'){
   var datos='tipo=NORE'+'&idcaja='+data['n']+'&minicial='+data['minicial']+'&abierto='+data['abierto'];
       $.ajax({
         url: "../phps/datacaja.php",
@@ -2239,6 +2623,9 @@ $('#central').on('click','#bcacerrar',function(evento){
           document.getElementById('dmodcajacerrar').style.display='block';
         }
       });
+  }else{
+    alert('La Caja se Encuentra Cerrada');
+  }
 });
 
 
@@ -2262,6 +2649,206 @@ $('#central').on('click','#bcaceaceptar',function(evento){
             cargardata();
         }
       });
+});
+
+
+//INICIO FUNCIONES BILLETAJE
+// Combo para seleccionar billetare de una semana, mes o todo
+$('#central').on('change','#cbfilfbilletaje',function(evento){ 
+   var filtrado=$('#cbfilfbilletaje').val();  
+   $.post('cajabilletaje.php',function(data){
+      $('#paginas').html(data);
+      cbilletaje(filtrado);
+      cargardata();
+  });
+});
+
+
+// Muestra Ventana Modal para registrar Billetaje
+$('#central').on('click','#bcbregistrar',function(evento){ 
+
+  if(($('#ltipotrabajador').text()==5) || ($('#ltipotrabajador').text()==1) ){
+    var now = new Date();
+    var day = ("0" + now.getDate()).slice(-2);
+    var month = ("0" + (now.getMonth() + 1)).slice(-2);
+    var today = now.getFullYear()+"-"+(month)+"-"+(day) ;
+
+    $('#acbfbilletaje').val(today);
+    $('#bstipo200').val('0');
+    $('#bstipo100').val('0');
+    $('#bstipo50').val('0');
+    $('#bstipo20').val('0');
+    $('#bstipo10').val('0');
+    $('#bstipo5').val('0');
+    $('#bstipo2').val('0');
+    $('#bstipo1').val('0');
+    $('#bstipo050').val('0');
+    $('#bstipo020').val('0');
+    $('#bstipo010').val('0');
+    $('#lbstipo200').val('0');
+    $('#lbstipo100').val('0');
+    $('#lbstipo50').val('0');
+    $('#lbstipo20').val('0');
+    $('#lbstipo10').val('0');
+    $('#lbstipo5').val('0');
+    $('#lbstipo2').val('0');
+    $('#lbstipo1').val('0');
+    $('#lbstipo050').val('0');
+    $('#lbstipo020').val('0');
+    $('#lbstipo010').val('0');
+    $('#bstotal').val('0');
+    document.getElementById('dmodcajabilletajes').style.display='block';
+  }else{
+    swal('UD. NO ES UN USUARIO CON FACULTADES PARA REGISTRAR BILLETAJES');
+  }
+
+});
+
+
+//Calculamos los valores totales por moneda
+$('#central').on('change','#bstipo200',function(evento){
+   var stotal= $('#lbstipo200').text() * $('#bstipo200').val();
+   //stotal = new Intl.NumberFormat().format(stotal);
+   stotal=stotal.toFixed(2);
+   $('#bstotal200').text(stotal);
+   var total = parseFloat($('#bstotal200').text()) + parseFloat($('#bstotal100').text()) + parseFloat($('#bstotal50').text()) + parseFloat($('#bstotal20').text()) + parseFloat($('#bstotal10').text()) + parseFloat($('#bstotal5').text()) + parseFloat($('#bstotal2').text()) + parseFloat($('#bstotal1').text()) + parseFloat($('#bstotal050').text()) + parseFloat($('#bstotal020').text()) + parseFloat($('#bstotal010').text());
+   total=total.toFixed(2);
+   $('#bstotal').text(total);
+});
+
+
+$('#central').on('change','#bstipo100',function(evento){
+   var stotal= $('#lbstipo100').text() * $('#bstipo100').val();
+   //stotal = new Intl.NumberFormat().format(stotal);
+   stotal=stotal.toFixed(2);
+   $('#bstotal100').text(stotal);
+   var total = parseFloat($('#bstotal200').text()) + parseFloat($('#bstotal100').text()) + parseFloat($('#bstotal50').text()) + parseFloat($('#bstotal20').text()) + parseFloat($('#bstotal10').text()) + parseFloat($('#bstotal5').text()) + parseFloat($('#bstotal2').text()) + parseFloat($('#bstotal1').text()) + parseFloat($('#bstotal050').text()) + parseFloat($('#bstotal020').text()) + parseFloat($('#bstotal010').text());
+   total=total.toFixed(2);
+   $('#bstotal').text(total);
+});
+
+
+$('#central').on('change','#bstipo50',function(evento){
+   var stotal= $('#lbstipo50').text() * $('#bstipo50').val();
+   //stotal = new Intl.NumberFormat().format(stotal);
+   stotal=stotal.toFixed(2);
+   $('#bstotal50').text(stotal);
+   var total = parseFloat($('#bstotal200').text()) + parseFloat($('#bstotal100').text()) + parseFloat($('#bstotal50').text()) + parseFloat($('#bstotal20').text()) + parseFloat($('#bstotal10').text()) + parseFloat($('#bstotal5').text()) + parseFloat($('#bstotal2').text()) + parseFloat($('#bstotal1').text()) + parseFloat($('#bstotal050').text()) + parseFloat($('#bstotal020').text()) + parseFloat($('#bstotal010').text());
+   total=total.toFixed(2);
+   $('#bstotal').text(total);
+});
+
+
+$('#central').on('change','#bstipo20',function(evento){
+   var stotal= $('#lbstipo20').text() * $('#bstipo20').val();
+   //stotal = new Intl.NumberFormat().format(stotal);
+   stotal=stotal.toFixed(2);
+   $('#bstotal20').text(stotal);
+   var total = parseFloat($('#bstotal200').text()) + parseFloat($('#bstotal100').text()) + parseFloat($('#bstotal50').text()) + parseFloat($('#bstotal20').text()) + parseFloat($('#bstotal10').text()) + parseFloat($('#bstotal5').text()) + parseFloat($('#bstotal2').text()) + parseFloat($('#bstotal1').text()) + parseFloat($('#bstotal050').text()) + parseFloat($('#bstotal020').text()) + parseFloat($('#bstotal010').text());
+   total=total.toFixed(2);
+   $('#bstotal').text(total);
+});
+
+
+$('#central').on('change','#bstipo10',function(evento){
+   var stotal= $('#lbstipo10').text() * $('#bstipo10').val();
+   //stotal = new Intl.NumberFormat().format(stotal);
+   stotal=stotal.toFixed(2);
+   $('#bstotal10').text(stotal);
+   var total = parseFloat($('#bstotal200').text()) + parseFloat($('#bstotal100').text()) + parseFloat($('#bstotal50').text()) + parseFloat($('#bstotal20').text()) + parseFloat($('#bstotal10').text()) + parseFloat($('#bstotal5').text()) + parseFloat($('#bstotal2').text()) + parseFloat($('#bstotal1').text()) + parseFloat($('#bstotal050').text()) + parseFloat($('#bstotal020').text()) + parseFloat($('#bstotal010').text());
+   total=total.toFixed(2);
+   $('#bstotal').text(total);
+});
+
+
+$('#central').on('change','#bstipo5',function(evento){
+   var stotal= $('#lbstipo5').text() * $('#bstipo5').val();
+   //stotal = new Intl.NumberFormat().format(stotal);
+   stotal=stotal.toFixed(2);
+   $('#bstotal5').text(stotal);
+   var total = parseFloat($('#bstotal200').text()) + parseFloat($('#bstotal100').text()) + parseFloat($('#bstotal50').text()) + parseFloat($('#bstotal20').text()) + parseFloat($('#bstotal10').text()) + parseFloat($('#bstotal5').text()) + parseFloat($('#bstotal2').text()) + parseFloat($('#bstotal1').text()) + parseFloat($('#bstotal050').text()) + parseFloat($('#bstotal020').text()) + parseFloat($('#bstotal010').text());
+   total=total.toFixed(2);
+   $('#bstotal').text(total);
+});
+
+
+$('#central').on('change','#bstipo2',function(evento){
+   var stotal= $('#lbstipo2').text() * $('#bstipo2').val();
+   //stotal = new Intl.NumberFormat().format(stotal);
+   stotal=stotal.toFixed(2);
+   $('#bstotal2').text(stotal);
+   var total = parseFloat($('#bstotal200').text()) + parseFloat($('#bstotal100').text()) + parseFloat($('#bstotal50').text()) + parseFloat($('#bstotal20').text()) + parseFloat($('#bstotal10').text()) + parseFloat($('#bstotal5').text()) + parseFloat($('#bstotal2').text()) + parseFloat($('#bstotal1').text()) + parseFloat($('#bstotal050').text()) + parseFloat($('#bstotal020').text()) + parseFloat($('#bstotal010').text());
+   total=total.toFixed(2);
+   $('#bstotal').text(total);
+});
+
+
+$('#central').on('change','#bstipo1',function(evento){
+   var stotal= $('#lbstipo1').text() * $('#bstipo1').val();
+   //stotal = new Intl.NumberFormat().format(stotal);
+   stotal=stotal.toFixed(2);
+   $('#bstotal1').text(stotal);
+   var total = parseFloat($('#bstotal200').text()) + parseFloat($('#bstotal100').text()) + parseFloat($('#bstotal50').text()) + parseFloat($('#bstotal20').text()) + parseFloat($('#bstotal10').text()) + parseFloat($('#bstotal5').text()) + parseFloat($('#bstotal2').text()) + parseFloat($('#bstotal1').text()) + parseFloat($('#bstotal050').text()) + parseFloat($('#bstotal020').text()) + parseFloat($('#bstotal010').text());
+   total=total.toFixed(2);
+   $('#bstotal').text(total);
+});
+
+
+$('#central').on('change','#bstipo050',function(evento){
+   var stotal= $('#lbstipo050').text() * $('#bstipo050').val();
+   //stotal = new Intl.NumberFormat().format(stotal);
+   stotal=stotal.toFixed(2);
+   $('#bstotal050').text(stotal);
+   var total = parseFloat($('#bstotal200').text()) + parseFloat($('#bstotal100').text()) + parseFloat($('#bstotal50').text()) + parseFloat($('#bstotal20').text()) + parseFloat($('#bstotal10').text()) + parseFloat($('#bstotal5').text()) + parseFloat($('#bstotal2').text()) + parseFloat($('#bstotal1').text()) + parseFloat($('#bstotal050').text()) + parseFloat($('#bstotal020').text()) + parseFloat($('#bstotal010').text());
+   total=total.toFixed(2);
+   $('#bstotal').text(total);
+});
+
+
+$('#central').on('change','#bstipo020',function(evento){
+   var stotal= $('#lbstipo020').text() * $('#bstipo020').val();
+   //stotal = new Intl.NumberFormat().format(stotal);
+   stotal=stotal.toFixed(2);
+   $('#bstotal020').text(stotal);
+   var total = parseFloat($('#bstotal200').text()) + parseFloat($('#bstotal100').text()) + parseFloat($('#bstotal50').text()) + parseFloat($('#bstotal20').text()) + parseFloat($('#bstotal10').text()) + parseFloat($('#bstotal5').text()) + parseFloat($('#bstotal2').text()) + parseFloat($('#bstotal1').text()) + parseFloat($('#bstotal050').text()) + parseFloat($('#bstotal020').text()) + parseFloat($('#bstotal010').text());
+   total=total.toFixed(2);
+   $('#bstotal').text(total);
+});
+
+
+$('#central').on('change','#bstipo010',function(evento){
+   var stotal= $('#lbstipo010').text() * $('#bstipo010').val();
+   stotal=stotal.toFixed(2);
+   $('#bstotal010').text(stotal);
+   var total = parseFloat($('#bstotal200').text()) + parseFloat($('#bstotal100').text()) + parseFloat($('#bstotal50').text()) + parseFloat($('#bstotal20').text()) + parseFloat($('#bstotal10').text()) + parseFloat($('#bstotal5').text()) + parseFloat($('#bstotal2').text()) + parseFloat($('#bstotal1').text()) + parseFloat($('#bstotal050').text()) + parseFloat($('#bstotal020').text()) + parseFloat($('#bstotal010').text());
+   total=total.toFixed(2);
+   $('#bstotal').text(total);
+});
+
+
+// Boton Guarda el Monto de Billetaje
+$('#central').on('click','#bmodcbsguardar',function(evento){ 
+
+    var datos='tipo=GUAB'+'&idtrabajador='+$('#acbidtrabajador').val()+'&fbilletaje='+$('#acbfbilletaje').val()+'&s200='+$('#bstipo200').val()+'&s100='+$('#bstipo100').val()+'&s50='+$('#bstipo50').val()+'&s20='+$('#bstipo20').val()+'&s10='+$('#bstipo10').val()+'&s5='+$('#bstipo5').val()+'&s2='+$('#bstipo2').val()+'&s1='+$('#bstipo1').val()+'&s050='+$('#bstipo050').val()+'&s020='+$('#bstipo020').val()+'&s010='+$('#bstipo010').val()+'&stotal='+$('#bstotal').text()+'&bobservaciones='+$('#bsobservacion').val();
+      $.ajax({
+        url: "../phps/datacaja.php",
+        type: "POST",
+        data: datos,
+        success: function(valor) {
+          //$('#dcontenidopagocuota').html(valor);
+          document.getElementById('dmodcajabilletajes').style.display='none';
+          cbilletaje('VS');
+          cargardata();
+          swal(valor);
+        }
+      });
+});
+
+
+// Boton Cierra Ventana Modal Billetaje
+$('#central').on('click','#bmodcbscerrar',function(evento){ 
+  //var vfecha=$('#afxrfecha').val();
+  document.getElementById('dmodcajabilletajes').style.display='none';
 });
 
 
@@ -2297,19 +2884,21 @@ $('#central').on('click','#bcpgpagar',function(evento){
       data: datos,
       success: function(valor) {
           if(valor=='2'){
-            alert('UD NO ES UN USUARIO CON FACULTADES PARA REALIZAR COBROS');
+            swal('UD NO ES UN USUARIO CON FACULTADES PARA REALIZAR COBROS');
             document.getElementById('dmodpagocuota').style.display='none';
           }else{
             if(valor=='1'){
-              alert('NO APERTURO CAJA PARA REALIZAR COBROS');
+              swal('NO SE APERTURO CAJA PARA REALIZAR COBROS');
               document.getElementById('dmodpagocuota').style.display='none';
             }else{
               var arreglo = JSON.parse(valor);
               var mensaje = arreglo[0];
               var vnmovimiento = arreglo[1];
               var vtipomov = arreglo[2];
-              alert(mensaje);
+              swal(mensaje);
               document.getElementById('dmodpagocuota').style.display='none';
+              cpagocuota();
+              cargardata();
               $.post('../phps/dticket.php',{tipomov:vtipomov,nmovimiento:vnmovimiento},function(data){
               $('#dcticketcuota').html(data);
               document.getElementById('dticketcuota').style.display='block';
@@ -2324,6 +2913,7 @@ $('#central').on('click','#bcpgpagar',function(evento){
 $('#central').on('click','#bcpgcerrar',function(evento){ 
     document.getElementById('dmodpagocuota').style.display='none';
 });
+
 
 //calcula la suma de cuotas
 $('#central').on('change','#lpcncutoas',function(evento){ 
@@ -2503,125 +3093,137 @@ $('#central').on('click','#bcarerecaudar',function(evento){
 });
 
 
-// CAJA - BILLETAJE
-//Calculamos los valores totales por moneda
-$('#central').on('change','#bstipo200',function(evento){
-   var stotal= $('#lbstipo200').text() * $('#bstipo200').val();
-   //stotal = new Intl.NumberFormat().format(stotal);
-   stotal=stotal.toFixed(2);
-   $('#bstotal200').text(stotal);
-   var total = parseFloat($('#bstotal200').text()) + parseFloat($('#bstotal100').text()) + parseFloat($('#bstotal50').text()) + parseFloat($('#bstotal20').text()) + parseFloat($('#bstotal10').text()) + parseFloat($('#bstotal5').text()) + parseFloat($('#bstotal2').text()) + parseFloat($('#bstotal1').text()) + parseFloat($('#bstotal05').text()) + parseFloat($('#bstotal02').text()) + parseFloat($('#bstotal01').text());
-   total=total.toFixed(2);
-   $('#bstotal').text(total);
+//CAJA CHICA
+//Muestra Ventana modal para crear nuevos periodos de caja chica
+$('#central').on('click','#bcccnuevo',function(evento){
+    $('#acccmonto').val(''); 
+    $('#acccdetalle').val('');
+    document.getElementById('dmodnuevocajachica').style.display='block';
 });
 
 
-$('#central').on('change','#bstipo100',function(evento){
-   var stotal= $('#lbstipo100').text() * $('#bstipo100').val();
-   //stotal = new Intl.NumberFormat().format(stotal);
-   stotal=stotal.toFixed(2);
-   $('#bstotal100').text(stotal);
-   var total = parseFloat($('#bstotal200').text()) + parseFloat($('#bstotal100').text()) + parseFloat($('#bstotal50').text()) + parseFloat($('#bstotal20').text()) + parseFloat($('#bstotal10').text()) + parseFloat($('#bstotal5').text()) + parseFloat($('#bstotal2').text()) + parseFloat($('#bstotal1').text()) + parseFloat($('#bstotal05').text()) + parseFloat($('#bstotal02').text()) + parseFloat($('#bstotal01').text());
-   total=total.toFixed(2);
-   $('#bstotal').text(total);
+// Boton Guarda Nuevo Periodo Caja Chica
+$('#central').on('click','#bmodcccnguardar',function(evento){ 
+   var blanco= ($('#acccmonto').val()).length * ($('#acccmes').val()).length * ($('#acccano').val()).length;
+
+   if(blanco>0) {
+      var datos='tipo=NOVO'+'&mes='+$('#acccmes').val()+'&ano='+$('#acccano').val()+'&monto='+$('#acccmonto').val()+'&detalle='+$('#acccdetalle').val();
+      alert(datos);
+      $.ajax({
+         url: "../phps/datacajachica.php",
+         type: "POST",
+         data: datos,
+         success: function(valor) {
+            if(valor=='2'){
+               alert('UD NO ES UN USUARIO CON FACULTADES PARA REALIZAR COBROS');
+               document.getElementById('dmodnuevocajachica').style.display='none';
+            }else{
+               //var arreglo = JSON.parse(valor); // ok
+               //var mensaje = arreglo[0];
+               //var vnmovimiento = arreglo[1];
+               //var vtipomov = arreglo[2];
+               alert(valor);
+               document.getElementById('dmodnuevocajachica').style.display='none';
+               ccajachica();
+               cargardata();
+            }
+         }
+      });
+   }else{
+      alert('Existen Datos en Blanco');
+   }
 });
 
 
-$('#central').on('change','#bstipo50',function(evento){
-   var stotal= $('#lbstipo50').text() * $('#bstipo50').val();
-   //stotal = new Intl.NumberFormat().format(stotal);
-   stotal=stotal.toFixed(2);
-   $('#bstotal50').text(stotal);
-   var total = parseFloat($('#bstotal200').text()) + parseFloat($('#bstotal100').text()) + parseFloat($('#bstotal50').text()) + parseFloat($('#bstotal20').text()) + parseFloat($('#bstotal10').text()) + parseFloat($('#bstotal5').text()) + parseFloat($('#bstotal2').text()) + parseFloat($('#bstotal1').text()) + parseFloat($('#bstotal05').text()) + parseFloat($('#bstotal02').text()) + parseFloat($('#bstotal01').text());
-   total=total.toFixed(2);
-   $('#bstotal').text(total);
+// Boton Cierra Nuevo Periodo Caja Chica
+$('#central').on('click','#bmodcccncerrar',function(evento){ 
+  document.getElementById('dmodnuevocajachica').style.display='none';
 });
 
 
-$('#central').on('change','#bstipo20',function(evento){
-   var stotal= $('#lbstipo20').text() * $('#bstipo20').val();
-   //stotal = new Intl.NumberFormat().format(stotal);
-   stotal=stotal.toFixed(2);
-   $('#bstotal20').text(stotal);
-   var total = parseFloat($('#bstotal200').text()) + parseFloat($('#bstotal100').text()) + parseFloat($('#bstotal50').text()) + parseFloat($('#bstotal20').text()) + parseFloat($('#bstotal10').text()) + parseFloat($('#bstotal5').text()) + parseFloat($('#bstotal2').text()) + parseFloat($('#bstotal1').text()) + parseFloat($('#bstotal05').text()) + parseFloat($('#bstotal02').text()) + parseFloat($('#bstotal01').text());
-   total=total.toFixed(2);
-   $('#bstotal').text(total);
+// Muestra Ventana Modal para agregar Nuevo Registro Caja Chica
+$('#central').on('click','#bcccregistro',function(evento){ 
+  var data = dtable.row( $(this).parents("tr") ).data();
+  
+  if(data['estado']=='ABIERTO'){
+     $('#larccperiodo').text(data['periodo']);
+     $('#larccidcaja').text(data['idcajachica']);
+     $('#acccrdetalle').val(''); 
+     $('#acccrmonto').val('');
+     $('#acccrnumero').val('');
+     $('#acccrobservaciones').val('');
+     document.getElementById('dmodregcajachica').style.display='block';
+   }else{
+     alert('LA CAJA CHICA NO SE ENCUENTRA ABIERTO. NO SE PUEDEN AGREGAR MOVIMIENTOS');
+   }
 });
 
 
-$('#central').on('change','#bstipo10',function(evento){
-   var stotal= $('#lbstipo10').text() * $('#bstipo10').val();
-   //stotal = new Intl.NumberFormat().format(stotal);
-   stotal=stotal.toFixed(2);
-   $('#bstotal10').text(stotal);
-   var total = parseFloat($('#bstotal200').text()) + parseFloat($('#bstotal100').text()) + parseFloat($('#bstotal50').text()) + parseFloat($('#bstotal20').text()) + parseFloat($('#bstotal10').text()) + parseFloat($('#bstotal5').text()) + parseFloat($('#bstotal2').text()) + parseFloat($('#bstotal1').text()) + parseFloat($('#bstotal05').text()) + parseFloat($('#bstotal02').text()) + parseFloat($('#bstotal01').text());
-   total=total.toFixed(2);
-   $('#bstotal').text(total);
+// Boton Guarda Nuevo Registro Caja Chica
+$('#central').on('click','#bmodcccrguardar',function(evento){ 
+   var blanco= ($('#acccrdetalle').val()).length * ($('#acccrmonto').val()).length * ($('#acccrfechamov').val()).length;
+
+   if(blanco>0) {
+      var datos='tipo=INSE'+'&idcajachica='+$('#larccidcaja').text()+'&trabajador='+$('#acccrtrabajador').val()+'&detalle='+$('#acccrdetalle').val()+'&tipomov='+$('#acccrtipomov').val()+'&moneda='+$('#acccrmoneda').val()+'&monto='+$('#acccrmonto').val()+'&documento='+$('#acccrdocumento').val()+'&numero='+$('#acccrnumero').val()+'&fechamov='+$('#acccrfechamov').val()+'&observaciones='+$('#acccrobservaciones').val();
+      alert(datos);
+      $.ajax({
+         url: "../phps/datacajachica.php",
+         type: "POST",
+         data: datos,
+         success: function(valor) {
+            if(valor=='2'){
+               alert('HUBO UN ERROR AL INGRESAR EL MOVIMIENTO');
+               document.getElementById('dmodregcajachica').style.display='none';
+            }else{
+               alert(valor);
+               document.getElementById('dmodregcajachica').style.display='none';
+               ccajachica();
+               cargardata();
+            }
+         }
+      });
+   }else{
+      alert('Existen Datos en Blanco');
+   }
 });
 
 
-$('#central').on('change','#bstipo5',function(evento){
-   var stotal= $('#lbstipo5').text() * $('#bstipo5').val();
-   //stotal = new Intl.NumberFormat().format(stotal);
-   stotal=stotal.toFixed(2);
-   $('#bstotal5').text(stotal);
-   var total = parseFloat($('#bstotal200').text()) + parseFloat($('#bstotal100').text()) + parseFloat($('#bstotal50').text()) + parseFloat($('#bstotal20').text()) + parseFloat($('#bstotal10').text()) + parseFloat($('#bstotal5').text()) + parseFloat($('#bstotal2').text()) + parseFloat($('#bstotal1').text()) + parseFloat($('#bstotal05').text()) + parseFloat($('#bstotal02').text()) + parseFloat($('#bstotal01').text());
-   total=total.toFixed(2);
-   $('#bstotal').text(total);
+// Boton Cierra Nuevo Registro de Mov Caja Chica
+$('#central').on('click','#bmodcccrcerrar',function(evento){ 
+  document.getElementById('dmodregcajachica').style.display='none';
 });
 
 
-$('#central').on('change','#bstipo2',function(evento){
-   var stotal= $('#lbstipo2').text() * $('#bstipo2').val();
-   //stotal = new Intl.NumberFormat().format(stotal);
-   stotal=stotal.toFixed(2);
-   $('#bstotal2').text(stotal);
-   var total = parseFloat($('#bstotal200').text()) + parseFloat($('#bstotal100').text()) + parseFloat($('#bstotal50').text()) + parseFloat($('#bstotal20').text()) + parseFloat($('#bstotal10').text()) + parseFloat($('#bstotal5').text()) + parseFloat($('#bstotal2').text()) + parseFloat($('#bstotal1').text()) + parseFloat($('#bstotal05').text()) + parseFloat($('#bstotal02').text()) + parseFloat($('#bstotal01').text());
-   total=total.toFixed(2);
-   $('#bstotal').text(total);
+//Visualizar los movimientos de Caja Chica
+$('#central').on('click','#bcccmovimientos',function(evento){ 
+  var data = dtable.row( $(this).parents("tr") ).data();
+  var datos='tipo=MOVS'+'&idcajachica='+data['idcajachica']+'&periodo='+data['periodo'];
+      $.ajax({
+        url: "../phps/datacajachica.php",
+        type: "POST",
+        data: datos,
+        success: function(valor) {
+          $('#dcajachicamov').html(valor);
+          document.getElementById('dmodcajachicamov').style.display='block';
+        }
+      });
 });
 
 
-$('#central').on('change','#bstipo1',function(evento){
-   var stotal= $('#lbstipo1').text() * $('#bstipo1').val();
-   //stotal = new Intl.NumberFormat().format(stotal);
-   stotal=stotal.toFixed(2);
-   $('#bstotal1').text(stotal);
-   var total = parseFloat($('#bstotal200').text()) + parseFloat($('#bstotal100').text()) + parseFloat($('#bstotal50').text()) + parseFloat($('#bstotal20').text()) + parseFloat($('#bstotal10').text()) + parseFloat($('#bstotal5').text()) + parseFloat($('#bstotal2').text()) + parseFloat($('#bstotal1').text()) + parseFloat($('#bstotal05').text()) + parseFloat($('#bstotal02').text()) + parseFloat($('#bstotal01').text());
-   total=total.toFixed(2);
-   $('#bstotal').text(total);
+//Imprimir flujo x recaudador
+$('#central').on('click','#bcccmovimprimir',function(evento){ 
+    var ficha = document.getElementById('dcccmovcontenido');
+    var ventimp = window.open(' ', 'popimpr');
+    ventimp.document.write( ficha.innerHTML );
+    ventimp.document.close();
+    ventimp.print( );
+    ventimp.close();
 });
 
 
-$('#central').on('change','#bstipo05',function(evento){
-   var stotal= $('#lbstipo05').text() * $('#bstipo05').val();
-   //stotal = new Intl.NumberFormat().format(stotal);
-   stotal=stotal.toFixed(2);
-   $('#bstotal05').text(stotal);
-   var total = parseFloat($('#bstotal200').text()) + parseFloat($('#bstotal100').text()) + parseFloat($('#bstotal50').text()) + parseFloat($('#bstotal20').text()) + parseFloat($('#bstotal10').text()) + parseFloat($('#bstotal5').text()) + parseFloat($('#bstotal2').text()) + parseFloat($('#bstotal1').text()) + parseFloat($('#bstotal05').text()) + parseFloat($('#bstotal02').text()) + parseFloat($('#bstotal01').text());
-   total=total.toFixed(2);
-   $('#bstotal').text(total);
-});
-
-
-$('#central').on('change','#bstipo02',function(evento){
-   var stotal= $('#lbstipo02').text() * $('#bstipo02').val();
-   //stotal = new Intl.NumberFormat().format(stotal);
-   stotal=stotal.toFixed(2);
-   $('#bstotal02').text(stotal);
-   var total = parseFloat($('#bstotal200').text()) + parseFloat($('#bstotal100').text()) + parseFloat($('#bstotal50').text()) + parseFloat($('#bstotal20').text()) + parseFloat($('#bstotal10').text()) + parseFloat($('#bstotal5').text()) + parseFloat($('#bstotal2').text()) + parseFloat($('#bstotal1').text()) + parseFloat($('#bstotal05').text()) + parseFloat($('#bstotal02').text()) + parseFloat($('#bstotal01').text());
-   total=total.toFixed(2);
-   $('#bstotal').text(total);
-});
-
-
-$('#central').on('change','#bstipo01',function(evento){
-   var stotal= $('#lbstipo01').text() * $('#bstipo01').val();
-   stotal=stotal.toFixed(2);
-   $('#bstotal01').text(stotal);
-   var total = parseFloat($('#bstotal200').text()) + parseFloat($('#bstotal100').text()) + parseFloat($('#bstotal50').text()) + parseFloat($('#bstotal20').text()) + parseFloat($('#bstotal10').text()) + parseFloat($('#bstotal5').text()) + parseFloat($('#bstotal2').text()) + parseFloat($('#bstotal1').text()) + parseFloat($('#bstotal05').text()) + parseFloat($('#bstotal02').text()) + parseFloat($('#bstotal01').text());
-   total=total.toFixed(2);
-   $('#bstotal').text(total);
+// Boton Cierra Ventana de Movimientos Caja Chica
+$('#central').on('click','#bcccmovcerrar',function(evento){ 
+  document.getElementById('dmodcajachicamov').style.display='none';
 });
 
 
@@ -2637,7 +3239,6 @@ $('#central').on('click','#bmodcicguardar',function(evento){
 
    if(blanco>0) {
       var datos='tipo=INGC'+'&detalle='+$('#acicdetalle').val()+'&trabajador='+$('#acictrabajador').val()+'&moneda='+$('#acicmoneda').val()+'&monto='+$('#acicmonto').val()+'&documento='+$('#acicdocumento').val()+'&numero='+$('#acicnumero').val()+'&fechaineg='+$('#acicfechaineg').val()+'&observaciones='+$('#acicobservaciones').val();
-      alert(datos);
       $.ajax({
          url: "../phps/dataineg.php",
          type: "POST",
@@ -2673,7 +3274,7 @@ $('#central').on('click','#bmodcicguardar',function(evento){
    }
 });
 
-// Boton para cerrar ventana modal para agergar ingresos
+// Boton para cerrar ventana modal para agregar ingresos
 $('#central').on('click','#bmodciccerrar',function(evento){ 
   document.getElementById('dmodingresos').style.display='none';
 });
@@ -2783,13 +3384,13 @@ $('#central').on('click','#bfxcimprimir',function(evento){
     //ventimp.document.write('<link rel="stylesheet" href="../css/general.css">');
     ventimp.document.write( ficha.innerHTML );
     ventimp.document.close();
-    var css = ventimp.document.createElement("link");
+    //var css = ventimp.document.createElement("link");
     //css.setAttribute("href", "../css/general.css");
     //css.setAttribute("rel", "stylesheet");
     //css.setAttribute("type", "text/css");
     //ventimp.document.head.appendChild(css);
-    //ventimp.print( );
-    //ventimp.close();
+    ventimp.print( );
+    ventimp.close();
 });
 
 
@@ -2814,13 +3415,65 @@ $('#central').on('click','#bfxdimprimir',function(evento){
     //ventimp.document.write('<link rel="stylesheet" href="../css/general.css">');
     ventimp.document.write( ficha.innerHTML );
     ventimp.document.close();
-    var css = ventimp.document.createElement("link");
+    //var css = ventimp.document.createElement("link");
     //css.setAttribute("href", "../css/general.css");
     //css.setAttribute("rel", "stylesheet");
     //css.setAttribute("type", "text/css");
     //ventimp.document.head.appendChild(css);
-    //ventimp.print( );
-    //ventimp.close();
+    ventimp.print( );
+    ventimp.close();
+});
+
+
+//PAGO DE INTERES POR CUENTA
+//Previsualizar el pago de interes por cuenta.
+$('#central').on('click','#bcpimostrar',function(evento){ 
+var blanco= ($('#acpipagomes').val()).length;
+if(blanco>0) {
+  var vdescripcion=$('#acpidescripcion').val();
+  var vmespago=$('#acpipagomes').val();
+  var date = new Date();
+  var ultimoDia = new Date(date.getFullYear(), vmespago, 0);
+  if(date>ultimoDia){
+    $.post('cajapagointeres.php',{descripcion:vdescripcion,mespago:vmespago},function(data){
+      $('#paginas').html(data);
+      document.getElementById('dpagointeres').style.display='block'; 
+      $("#acpipagomes").val(vmespago);
+      $("#acpidescripcion").val(vdescripcion);
+    });
+  }else{
+    alert('No se puede pagar interes porque el Mes no finalizo');
+    alert(ultimoDia);
+  }
+}else{
+  alert('No ha seleccionado ningun periodo de pago');
+}
+});
+
+
+$('#central').on('click','#bcpipagar',function(evento){ 
+  var vdescripcion=$('#acpidescripcion').val();
+  var vmespago=$('#acpipagomes').val();
+  var datos='tipo=INT'+'&descripcion='+$('#acpidescripcion').val()+'&mespago='+$('#acpipagomes').val();
+    alert(datos);
+    $.ajax({
+      url: "../phps/dataahorro.php",
+      type: "POST",
+      data: datos,
+      success: function(valor) {
+          if(valor==2){
+            alert('UD NO ES UN USUARIO CON FACULTADES PARA REALIZAR COBROS');
+            document.getElementById('dmoddepositar').style.display='none';
+          }else{
+              var arreglo = JSON.parse(valor); // ok
+              var mensaje = arreglo[0];
+              var vtipomov = arreglo[1];
+              alert(mensaje);
+              //document.getElementById('dmoddepositar').style.display='none';
+          
+          }
+      }
+    });
 });
 
 
@@ -2850,7 +3503,6 @@ $('#central').on('click','#bcpgtopagar',function(evento){
     var vdescuento=$('#tcuotas').find("tr").eq('1').find("td").eq(8).html();
     var vcuota=$('#tcuotas').find("tr").eq('1').find("td").eq(9).html();
     var datos='tipo=PGTO'+'&idsocio='+$('#lpcidsocio').text()+'&nprestamo='+$('#lpcnprestamo').text()+'&descripcion='+$('#lpcdescripcion').text()+'&ncuota='+ncuota+'&fechaprog='+fechaprog+'&dmora='+dmora+'&vmora='+vmora+'&vcuota='+vcuota+'&vdescuento='+vdescuento+'&monto='+$('#apcmonto').val()+'&mtotal='+$('#lpttotal').text();
-    alert(datos);
     $.ajax({
       url: "../phps/datapagocuota.php",
       type: "POST",
@@ -2951,6 +3603,26 @@ $('#central').on('click','#brpropimprimir',function(evento){
     ventimp.document.close();
 });
 
+
+//Reporte Recaudacion
+$('#central').on('click','#brrecmostrar',function(evento){ 
+
+var blanco= ($('#arrecperiodo').val()).length * ($('#arrecano').val()).length;
+if(blanco>0) {
+  var vperiodo=$('#arrecperiodo').val();
+  var vano=$('#arrecano').val();
+  var vrecaudador=$('#arrecpromotor').val();
+  var nrecaudador=$('#arrecpromotor option:selected').text();
+  $.post('rptrecaudar.php',{periodo:vperiodo, ano:vano, idrecaudador:vrecaudador, recaudador:nrecaudador},function(data){
+    $('#paginas').html(data);
+    document.getElementById('drrecrecaudar').style.display='block';
+  });
+}else{
+  alert('Faltan seleccionar datos');
+}
+
+});
+
 //----------------- FIN FUNCIONES OPCIONES REPORTES -----------------//
 //-------------------------------------------------------------------//
 // ------------ INICIO FUNCIONES OPCIONES GESTION MORA --------------//
@@ -2966,6 +3638,32 @@ $('#central').on('click','#bgmrmgenerar',function(evento){
   });
 });
 
+//Boton para mostar extracto de Gestion Mora - reporte mora 
+$('#central').on('click','#bgmrmextracto',function(evento){ 
+  var ncuenta= $(this).text();
+  var datos='tipo=EXTR'+'&nprestamo='+ncuenta;
+      $.ajax({
+        url: "../phps/dataprestamo.php",
+        type: "POST",
+        data: datos,
+        success: function(valor) {
+          $('#dextractoprestamo').html(valor);
+          document.getElementById('dmodextractoprestamo').style.display='block';
+          //datosahorro();
+        }
+      });
+  //alert('Estamos probando si funca'+ncuenta);
+});
+
+
+$('#central').on('click','#bgmrmimprimir',function(evento){ 
+    var ficha = document.getElementById('dgmrmora');
+    var ventimp = window.open(' ', 'popimpr');
+    ventimp.document.write( ficha.innerHTML );
+    ventimp.document.close();
+    ventimp.print();
+    ventimp.close();
+});
 //--------------- FIN FUNCIONES OPCIONES GESTION MORA ---------------//
 //-------------------------------------------------------------------//
 // ------------ INICIO FUNCIONES OPCIONES MANTENIMIENTO -------------//
@@ -3037,19 +3735,18 @@ $('#central').on('click','#bmodrtcerrar',function(evento){
   document.getElementById('dmodtrabajador').style.display='none';
 });
 
-
+//GUARDA UN NUEVO TRABAJADOR
 $('#central').on('click','#bmodrtguardar',function(evento){ 
   var blanco = ($('#artdni').val()).length * ($('#artapaterno').val()).length * ($('#artamaterno').val()).length * ($('#artnombres').val()).length * ($('#artcelular').val()).length;
   if(blanco>0) {
     //$('#arttipotrabajador option:selected').text()
-    var datos='tipo=INS'+'&dni='+$('#artdni').val()+'&apaterno='+$('#artapaterno').val()+'&amaterno='+$('#artamaterno').val()+'&nombres='+$('#artnombres').val()+'&celular='+$('#artcelular').val()+'&tipotrabajador='+$('#arttipotrabajador').val();
-    
+    var datos='tipo=INS'+'&dni='+$('#artdni').val()+'&apaterno='+$('#artapaterno').val()+'&amaterno='+$('#artamaterno').val()+'&nombres='+$('#artnombres').val()+'&celular='+$('#artcelular').val()+'&tipotrabajador='+$('#arttipotrabajador').val()+'&sucursal='+$('#artsucursal').val();
      $.ajax({
       url: "../phps/datatrabajador.php",
       type: "POST",
       data: datos,
       success: function(valor) {
-          alert(valor);
+          swal(valor);
           $.post('mantetrabajador.php',function(data){
             $('#paginas').html(data);
             mtrabajador();
@@ -3089,7 +3786,7 @@ $('#central').on('click','#bmodbtaceptar',function(evento){
             alert('UD NO CUENTA CON FACULTADES PARA DAR DE BAJA A ESTE USUARIO');
               document.getElementById('dmodbtrabajador').style.display='none';
             }else{
-              alert(valor)
+              swal(valor)
               document.getElementById('dmodbtrabajador').style.display='none';
               mtrabajador();
               cargardata();
@@ -3106,35 +3803,38 @@ $('#central').on('click','#bmodbtcerrar',function(evento){
 
 
 
-//editar datos de trabajador
+//MODIFICAR DATOS DEL TRABAJADOR
 $('#central').on('click','#bmteditar',function(evento){ 
   var data = dtable.row( $(this).parents("tr") ).data();
   //var dni = data['dni'];
+  document.getElementById('dmodmtrabajador').style.display='block';
   $('#amtdni').val(data['dni']);
   $('#amtapaterno').val(data['apaterno']);
   $('#amtamaterno').val(data['amaterno']);
   $('#amtnombres').val(data['nombres']);
   $('#amtcelular').val(data['celular']);
-  $("#amttipotrabajador").find('option:contains("'+data['descripcion']+'")').prop('selected', true);        
-  document.getElementById('dmodmtrabajador').style.display='block';
+  $("#amttipotrabajador").find('option:contains("'+data['descripcion']+'")').prop('selected', true);
+  $("#amtsucursal").val(data['sucursal']);
+  //$("#amtsucursal").find('option:contains("'+data['sucursal']+'")').prop('selected', true);          
+
 });
 
 
 $('#central').on('click','#bmodmmtguardar',function(evento){ 
 
-  var datos='tipo=ACT'+'&dni='+$('#amtdni').val()+'&apaterno='+$('#amtapaterno').val()+'&amaterno='+$('#amtamaterno').val()+'&nombres='+$('#amtnombres').val()+'&celular='+$('#amtcelular').val()+'&tipotrabajador='+$('#amttipotrabajador').val();
+  var datos='tipo=ACT'+'&dni='+$('#amtdni').val()+'&apaterno='+$('#amtapaterno').val()+'&amaterno='+$('#amtamaterno').val()+'&nombres='+$('#amtnombres').val()+'&celular='+$('#amtcelular').val()+'&tipotrabajador='+$('#amttipotrabajador').val()+'&sucursal='+$('#amtsucursal').val();
      $.ajax({
       url: "../phps/datatrabajador.php",
       type: "POST",
       data: datos,
       success: function(valor) {
-          alert(valor);
+          swal(valor);
           $.post('mantetrabajador.php',function(data){
             $('#paginas').html(data);
             mtrabajador();
             cargardata();
           });
-      document.getElementById('dmodmtrabajador').style.display='none';
+          document.getElementById('dmodmtrabajador').style.display='none';
       }
     });
 });
@@ -3373,6 +4073,43 @@ $('#central').on('click','#bmodmtaguardar',function(evento){
 $('#central').on('click','#bmodmtacerrar',function(evento){ 
   document.getElementById('dmodmtipoahorro').style.display='none';
 });
+
+
+//--- INICIO FUNCIONES DE CAMBIO DE CARTERA---//
+$('#central').on('click','#bmccartera',function(evento){ 
+   var data = dtable.row( $(this).parents("tr") ).data();
+   $('#lmccidprestamo').text(data['idprestamo']);
+   $('#lmccsocio').text(data['socio']);
+   $('#lmccidsocio').text(data['idsocio']);
+   $('#lmccidpromotor').text(data['analista']);
+   $('#amccpromotor').val(data['nanalista']);
+   document.getElementById('dmodccartera').style.display='block';
+}); 
+
+
+$('#central').on('click','#bmcccambiar',function(evento){ 
+   var datos='tipo=UPCAR'+'&idprestamo='+$('#lmccidprestamo').text()+'&idanalista='+$('#smccanalista').val();
+   $.ajax({
+      url: "../phps/dataprestamo.php",
+      type: "POST",
+      data: datos,
+      success: function(valor) {
+         swal(valor);
+         $.post('manteccartera.php',function(data){
+         $('#paginas').html(data);
+            mccartera();
+            cargardata();
+         });   
+      document.getElementById('dmodccartera').style.display='none';
+      }
+   });
+});
+
+
+$('#central').on('click','#bmcccancelar',function(evento){ 
+    document.getElementById('dmodccartera').style.display='none';
+}); 
+//---  FIN FUNCIONES DE CAMBIO DE CARTERA  ---//
 
 
 // FUNCIONES FERIADO
