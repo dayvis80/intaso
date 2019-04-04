@@ -31,35 +31,37 @@ function prestamo(){
    <table class="tpinfo" id="tpsocio" style="width: 840px;">
    <tr><td colspan="2"><h2>INFORMACIÓN DEL SOCIO<h2></td>
       <td>DNI SOCIO:</td>
-      <td><input type="text" name="apndni" id="apndni" class="textop"></td>
-      <td><button id="bpnbuscarsocio" class="bsistema"><img src="../recursos/socio.png"/><span>BUSCAR</span></button></td>
+      <td><input type="text" name="apndni" id="apndni" class="texto pequeno"></td>
+      <td><button id="bpnbuscarsocio" class="bsistema"><img src="../recursos/bbuscar.png"/><span>BUSCAR</span></button></td>
    </tr>
    <tr><td colspan="2">NOMBRE</td>
       <td colspan="2">DIRECCIÓN</td>
       <td>TIPO</td>
    </tr>
-   <tr class="separar"><td colspan="2"><input type="text" name="apnsocio" id="apnsocio" class="textog"></td>
-      <td colspan="2"><input type="text" name="apndireccion" id="apndireccion" class="textog"></td>
-      <td><input type="text" name="apntipo" id="apntipo" class="textop">
-      <input type="text" name="apnidsocio" id="apnidsocio" class="textop" style="display: none;"></td>
+   <tr class="separar"><td colspan="2"><input type="text" name="apnsocio" id="apnsocio" class="texto grande" disabled></td>
+      <td colspan="2"><input type="text" name="apndireccion" id="apndireccion" class="texto grande" disabled></td>
+      <td><input type="text" name="apntipo" id="apntipo" class="texto pequeno" disabled>
+      <input type="text" name="apnidsocio" id="apnidsocio" class="texto pequeno" style="display: none;"></td>
    </tr>
    </table>
 
    <table class="tpinfo" id="tpprestamo" style="width: 840px;">
    <tr class="separar">
       <td colspan="2"><h2>INFORMACIÓN DE PRESTAMO</h2></td>
-      <td><select name="apntipoprestamo" id="apntipoprestamo" class="opcionm">
+      <td><select name="apntipoprestamo" id="apntipoprestamo" class="opcion mediano">
       <?php
-         $query = pg_query("select idtipoprestamo, descripcion, plazo, tem, moneda, comision, mora, montomin, montomax from ttipoprestamo;");
+         $sucursal=$_SESSION['sucursal'];
+         $query = pg_query("select idtipoprestamo, descripcion, plazo, tem, moneda, comision, mora, montomin, montomax from ttipoprestamo where sucursal='". $sucursal ."' order by descripcion,plazo;");
          $tregistros = pg_numrows($query);
          for($i=1;$i<=$tregistros; $i++){
          $registros = pg_fetch_array($query, null, PGSQL_ASSOC);      
          $valores=$registros[idtipoprestamo].'&'.$registros[descripcion].'&'.$registros[plazo].'&'.$registros[tem].'&'.$registros[moneda].'&'.$registros[comision].'&'.$registros[mora].'&'.$registros[montomin].'&'.$registros[montomax];
          echo "<option value='".$valores."'>".$registros[descripcion]." ".$registros[plazo]."</option>";
          }
+         pg_free_result($query);
       ?>
       </select></td>
-      <td><button id="bpngenerar" class="bsistema"><img src="../recursos/bcancelar.png"/><span>GENERAR</span></button></td>
+      <td><button id="bpngenerar" class="bsistema"><img src="../recursos/bgenerar.png"/><span>GENERAR</span></button></td>
    </tr>
    <tr>
       <td>TEM %</td>
@@ -67,10 +69,10 @@ function prestamo(){
       <td>COMSION %</td>
       <td>MORA %</td>
    </tr>
-   <tr><td><input type="text" name="apntem" id="apntem" class="textop"></td>
-      <td><input type="text" name="apnplazo" id="apnplazo" class="textop"></td>
-      <td><input type="text" name="apncomision" id="apncomision" class="textop"></td>
-      <td><input type="text" name="apnmora" id="apnmora" class="textop"></td>
+   <tr><td><input type="text" name="apntem" id="apntem" class="texto pequeno"></td>
+      <td><input type="text" name="apnplazo" id="apnplazo" class="texto pequeno" disabled></td>
+      <td><input type="text" name="apncomision" id="apncomision" class="texto pequeno" disabled></td>
+      <td><input type="text" name="apnmora" id="apnmora" class="texto pequeno" disabled></td>
    </tr>
    <tr>
       <td>MONTO: S/.</td>
@@ -80,16 +82,16 @@ function prestamo(){
    </tr>
 
    <tr>
-      <td><input type="text" name="apnmonto" id="apnmonto" class="textop"></td>
-      <td><select name="apnfecpago" id="apnfecpago" class="opcionm">
+      <td><input type="text" name="apnmonto" id="apnmonto" class="texto pequeno"></td>
+      <td><select name="apnfecpago" id="apnfecpago" class="opcion mediano">
          <option value="1">LUNES A VIERNES</option>
          <option value="2">LUNES A SABÁDO</option>
          <option value="3">SEMANAL</option>
          <option value="4">QUINCENAL</option>
          <option value="5">MENSUAL</option>
       </select></td>
-      <td><input type="text" name="apnaporte" id="apnaporte" class="textop" value="0.40"></td>
-      <td><select name="apncondicion" id="apncondicion" class="opcionm">
+      <td><input type="text" name="apnaporte" id="apnaporte" class="texto pequeno" value="0.40"></td>
+      <td><select name="apncondicion" id="apncondicion" class="opcion mediano">
          <option value="1">NUEVO</option>
          <option value="2">RECURRENTE C/S</option>
          <option value="3">RECURRENTE S/S</option>
@@ -97,30 +99,32 @@ function prestamo(){
       </select></td>  
    </tr>
 
-   <tr>
+   <tr class="separar">
       <td colspan="2">ANALISTA:</td>
       <td colspan="2">RECAUDADOR:</td>
    </tr>
 
    <tr>
-      <td colspan="2"><select name="apnanalista" id="apnanalista" class="opciong">
+      <td colspan="2"><select name="apnanalista" id="apnanalista" class="opcion grande">
          <?php
-            $query = pg_query("select idtrabajador as analista, CONCAT(nombres,' ',apaterno,' ',amaterno) as nombre from ttrabajador;");
+            $query = pg_query("select idtrabajador as analista, CONCAT(apaterno,' ',amaterno,' ',nombres) as nombre from ttrabajador where tipotrabajador<>0 and (tipotrabajador=2 or tipotrabajador=3 or tipotrabajador=12) and sucursal='". $sucursal ."' order by nombre;");
             $tregistros = pg_numrows($query);
             for($i=1;$i<=$tregistros; $i++){
                $registros = pg_fetch_array($query, null, PGSQL_ASSOC);
                echo "<option value='".$registros[analista]."'>".$registros[nombre]."</option>";
             }
+            pg_free_result($query);
          ?>
       </select></td>
-      <td colspan="2"><select name="apnrecaudador" id="apnrecaudador" class="opciong">
+      <td colspan="2"><select name="apnrecaudador" id="apnrecaudador" class="opcion grande">
          <?php
-            $query = pg_query("select idtrabajador as analista, CONCAT(nombres,' ',apaterno,' ',amaterno) as nombre from ttrabajador;");
+            $query = pg_query("select idtrabajador as analista, CONCAT(apaterno,' ',amaterno,' ',nombres) as nombre from ttrabajador where tipotrabajador<>0 and (tipotrabajador=3 or tipotrabajador=12) and sucursal='". $sucursal ."' order by nombre;");
             $tregistros = pg_numrows($query);
             for($i=1;$i<=$tregistros; $i++){
                $registros = pg_fetch_array($query, null, PGSQL_ASSOC);
                echo "<option value='".$registros[analista]."'>".$registros[nombre]."</option>";
             }
+            pg_free_result($query);
          ?>
       </select></td>
    </tr>

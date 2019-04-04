@@ -24,6 +24,7 @@
         <th>TEM</th>
         <th>FEC. PAGO</th>
         <th>F. PRESTAMO</th>
+        <th>ESTADO</th>
         <th>ACCIONES</th>
       </tr>
 	 </thead>
@@ -42,6 +43,7 @@
         <th>TEM</th>
         <th>FEC. PAGO</th>
         <th>F. PRESTAMO</th>
+        <th>EXTRACTO</th>
         <th>ACCIONES</th>
 	 </tr>
 	 </tfoot>

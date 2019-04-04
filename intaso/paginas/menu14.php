@@ -12,9 +12,7 @@
 <div class="opcmenu">
     <h3 align="left" class="titulomenu" title="02">AHORROS<img id="img02" class="imagenmenu" src="<?php echo $rutarecursos ?>expander.png" align="right"></h3>
     <div id="02" class="opcionesboton" style="display: none;">
-        <button id="omeahorrosnuevo" class="primero">Nuevo</button>
         <button id="omeahorrosextracto" class="primero">Extracto</button>
-        <button id="omeahorroscertificado" class="primero">Certificado</button>
     </div>
 </div>
 <!--            FIN   MENU   AHORROS           -->
@@ -31,24 +29,22 @@
 <div class="opcmenu">
     <h3 align="left" class="titulomenu" title="04">CAJA<img id="img04" class="imagenmenu" src="<?php echo $rutarecursos ?>expander.png" align="right"></h3>
     <div id="04" class="opcionesboton" style="display: none;">
-        <button id="omecajadesembolso" class="primero">Desembolso</button>
-        <button id="omecajaapertura" class="primero">Apertura</button>
-        <button id="omecajabilletaje" class="primero">Billetaje</button>
         <button id="omecajapagocuota" class="primero">Pago Cuota</button>
         <button id="omecajadeposito" class="primero">Deposito</button>
-        <button id="omecajaretiro" class="primero">Retiro</button>
-        <button id="omecajarecaudar" class="primero">Recaudar</button>
-        <button id="omecajaingresoscaja" class="primero">Ingresos Caja</button>
-        <button id="omecajaegresoscaja" class="primero">Egresos Caja</button>
         <button id="omecajaflujoxcajeros" class="primero">Flujo X Cajeros</button>
-        <button id="omecajaflujoxrecaudador" class="primero">Flujo x Recaudador</button>
         <button id="omecajaflujodetallado" class="primero">Flujo Detallado</button>
-        <button id="omecajapagointeres" class="primero">Pago Interes</button>
         <button id="omecajapagototal" class="primero">Pago Total</button>
-        <button id="omecajaduplicado" class="primero">Duplicado</button>
     </div>
 </div>
 <!--            FIN   MENU    CAJA             -->
+<!--        INICIO   MENU    REPORTRES         -->
+<div class="opcmenu">
+    <h3 align="left" class="titulomenu" title="05">REPORTES<img id="img05" class="imagenmenu" src="<?php echo $rutarecursos ?>expander.png" align="right"></h3>
+    <div id="05" class="opcionesboton" style="display: none;">
+        <button id="omerepoproductividad" class="primero">Productividad</button>
+    </div>
+</div>
+<!--          FIN  MENU   REPORTES             -->
 <!--       INICIO   MENU   GESTION MORA        -->
 <div class="opcmenu">
     <h3 align="left" class="titulomenu" title="06">GESTION MORA<img id="img06" class="imagenmenu" src="<?php echo $rutarecursos ?>expander.png" align="right"></h3>
@@ -59,15 +55,17 @@
     </div>
 </div>
 <!--        FIN  MENU   GESTION MORA           -->
-<!--       INICIO   MENU   CONTABILIDAD        -->
+<!--       INICIO   MENU   MANTENIMIENTO       -->
 <div class="opcmenu">
-    <h3 align="left" class="titulomenu" title="07">CONTABILIDAD<img id="img07" class="imagenmenu" src="<?php echo $rutarecursos ?>expander.png" align="right"></h3>
-    <div id="07" class="opcionesboton" style="display: none;">
-        <button id="omecontalventas" class="primero">Libro Ventas</button>
-        <button id="omecontalcompras" class="primero">Libro Compras</button>
+    <h3 align="left" class="titulomenu" title="08">MANTENIMIENTO<img id="img08" class="imagenmenu" src="<?php echo $rutarecursos ?>expander.png" align="right"></h3>
+    <div id="08" class="opcionesboton" style="display: none;">
+        <button id="omemanteaoperaciones" class="primero">Anulacion de Operaciones</button>
+        <button id="omemantebahorro" class="primero">Bloqueo Ahorro</button>
+        <button id="omemantetrabajador" class="primero">Trabajador</button>
+        <button id="omemanteusuario" class="primero">Usuario</button>
     </div>
 </div>
-<!--        FIN  MENU   CONTABILIDAD           -->
+<!--        FIN  MENU   MANTENIMIENTO           -->
 <!--          INICIO    MENU   SIMULADOR        -->
 <div class="opcmenu">
     <h3 align="left" class="titulomenu" title="09">SIMULADOR<img id="img09" class="imagenmenu" src="<?php echo $rutarecursos ?>expander.png" align="right"></h3>

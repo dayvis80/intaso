@@ -14,7 +14,6 @@
         <button id="omecajadeposito" class="primero">Deposito</button>
         <button id="omecajaflujoxcajeros" class="primero">Flujo X Cajeros</button>
         <button id="omecajaflujoxrecaudador" class="primero">Flujo x Recaudador</button>
-        <button id="omecajaflujodetallado" class="primero">Flujo Detallado</button>
     </div>
 </div>
 <!--             FIN   MENU   CAJA            -->

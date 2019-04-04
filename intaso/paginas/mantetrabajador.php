@@ -23,7 +23,9 @@
       <th>CELULAR</th>
       <th>TIPO</th>
       <th>REGISTRADO</th>
+      <th>AGENCIA</th>
       <th>ESTADO</th>
+      <th>SUCURSAL</th>
       <th>ACCIONES</th>
     </tr>
     </thead>
@@ -41,7 +43,9 @@
       <th>CELULAR</th>
       <th>TIPO</th>
       <th>REGISTRADO</th>
+      <th>AGENCIA</th>
       <th>ESTADO</th>
+      <th>SUCURSAL</th>
       <th>ACCIONES</th>
     </tr>
     </tfoot>
@@ -83,20 +87,35 @@
       
           <tr class="separar">
             <td width="140px"><label>TIPO TRABAJADOR:</label></td>
-            <td><select name="arttipotrabajador" id="arttipotrabajador" class="opcionm">
-                <option value="1">ADMINISTADOR DE SISTEMAS</option>
-                <option value="2">ADMINISTRADOR DE OFICINA</option>
-                <option value="3" selected="selected">ANALISTA</option>
-                <option value="4">AUXILIAR DE OPERACIONES</option>
-                <option value="5">CAJERO</option>
-                <option value="6">CONTADOR</option>
-                <option value="7">GESTOR DE RECUPERACIONES</option>
-                <option value="8">JEFE DE AHORROS</option>
-                <option value="9">JEFE DE CREDITOS</option>
-                <option value="10">JEFE DE OPERACIONES</option>
-                <option value="11">JEFE DE UNIDAD DE COBRANZAS</option>
-                <option value="12">PROMOTOR DE AHORRO Y CREDITOS</option>
-                </select></td>  
+            <td><select name="arttipotrabajador" id="arttipotrabajador" class="opcion mediano">
+               <?php
+               $BD_conn = pg_connect("host=".$host." port=".$puerto." user=".$usuario." dbname=".$dbname." password=".$password." ");
+               $query = pg_query("select idtipotrabajador, descripcion from ttipotrabajador where idtipotrabajador<>0;");
+               $tregistros = pg_numrows($query);
+                  for($i=1;$i<=$tregistros; $i++){
+                  $registros = pg_fetch_array($query, null, PGSQL_ASSOC);
+                  echo "<option value='".$registros[idtipotrabajador]."'>".$registros[descripcion]."</option>";
+                  }
+               pg_free_result($query);
+               pg_close($BD_conn);
+               ?>
+               </select></td>  
+          </tr>
+          <tr class="separar">
+            <td><label>SUCURSAL:</label></td>
+            <td><select id="artsucursal" class="opcion mediano">
+               <?php
+               $BD_conn = pg_connect("host=".$host." port=".$puerto." user=".$usuario." dbname=".$dbname." password=".$password." ");
+               $query = pg_query("select idsucursal, descripcion from tsucursal;");
+               $tregistros = pg_numrows($query);
+                  for($i=1;$i<=$tregistros; $i++){
+                  $registros = pg_fetch_array($query, null, PGSQL_ASSOC);
+                  echo "<option value='".$registros[idsucursal]."'>".$registros[descripcion]."</option>";
+                  }
+               pg_free_result($query);
+               pg_close($BD_conn);
+               ?>
+               </select></td>
           </tr>
         </table>   
         <button id="bmodrtguardar" class="bsistema" style="float:left; margin: 15px 0px 0px 30px;"><img src="../recursos/baceptar.png"/><span>GUARDAR</span></button>
@@ -151,7 +170,17 @@
                 <option value="10">JEFE DE OPERACIONES</option>
                 <option value="11">JEFE DE UNIDAD DE COBRANZAS</option>
                 <option value="12">PROMOTOR DE AHORRO Y CREDITOS</option>
+                <option value="14">ENCARGADO DE OFICINA</option>
+                <option value="15">SUPERVISOR</option>
                 </select></td>  
+          </tr>
+          <tr class="separar">
+            <td><label>SUCURSAL:</label></td>
+            <td><select id="amtsucursal" class="opcion mediano">
+                <option value="1">AGENCIA SICUANI</option>
+                <option value="2">AGENCIA COMBAPATA</option>
+                <option value="3">AGENCIA MARANGANI</option>
+               </select></td>
           </tr>
         </table>
         <button id="bmodmmtguardar" class="bsistema" style="float:left; margin: 15px 0px 0px 30px;"><img src="../recursos/baceptar.png"/><span>GUARDAR</span></button>

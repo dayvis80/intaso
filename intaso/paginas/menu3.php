@@ -25,7 +25,6 @@
         <button id="omecajapagocuota" class="primero">Pago Cuota</button>
         <button id="omecajaflujoxcajeros" class="primero">Flujo X Cajeros</button>
         <button id="omecajaflujoxrecaudador" class="primero">Flujo x Recaudador</button>
-        <button id="omecajaflujodetallado" class="primero">Flujo Detallado</button>
     </div>
 </div>
 <!--            FIN   MENU    CAJA             -->

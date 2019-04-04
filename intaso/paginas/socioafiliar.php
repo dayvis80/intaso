@@ -56,20 +56,32 @@
       <div class="dmodalcontenido">
         <table id="trsmodal">
           <tr class="separar">
-            <td width="320px" style="font-size: 14px;"><label>SE PROCEDERA A AFILIAR AL SIGUIENTE SOCIO:</label></td>
-          </tr>
-          
-          <tr class="separar">
-            <td style="font-size: 14px;"><label id="lansocio"></label>  <label id="landni"></label><label id="lanidsocio" style="display: none;"></label><label id="landni"></label></td>
+            <th colspan="2" width="320px" style="font-size: 14px;"><label>SE PROCEDERA A AFILIAR AL SIGUIENTE SOCIO:</label></th>
           </tr>
 
           <tr class="separar">
-            <td style="font-size: 14px;">Monto de Afiliacion: S/. <label id="lanmonto"></label></td>
+            <td></td>
+            <td style="font-size: 14px;"></td>
+          </tr>
+
+          <tr class="separar">
+            <td>SOCIO:</td>
+            <td style="font-size: 14px;"><label id="lansocio"></label> <label id="lanidsocio" style="display: none;"></label></td>
+          </tr>
+
+          <tr class="separar">
+            <td>DOCUMENTO:</td>
+            <td style="font-size: 14px;"><label id="lantipo"></label><label id="landni"></label></td>
+          </tr>
+
+          <tr class="separar">
+            <td style="font-size: 14px;">MONTO:</td>
+            <td style="font-size: 14px;"> S/. <label id="lanmonto"></label> </td>
           </tr>
         </table>   
 
-        <button id="bmodsaafiliar" class="bsistema" style="float:left; margin: 15px 0px 0px 30px;"><span>Afiliar &nbsp;</span><img src="../recursos/baceptar.png"/></button>
-        <button id="bmodsacerrar" class="bsistema" style="float:right; margin: 15px 30px 0px 0px;"><span>Cancelar &nbsp;</span><img src="../recursos/bcancelar.png"/></button>
+        <button id="bmodsaafiliar" class="bsistema" style="float:left; margin: 15px 0px 0px 30px;"><span>AFILIAR &nbsp;</span><img src="../recursos/bafiliar.png"/></button>
+        <button id="bmodsacerrar" class="bsistema" style="float:right; margin: 15px 30px 0px 0px;"><span>CANCELAR &nbsp;</span><img src="../recursos/bcancelar.png"/></button>
       </div>
     </div>  
   </div>

@@ -4,6 +4,7 @@
     <div id="01" class="opcionesboton" style="display: none;">
         <button id="omesocioregistrar" class="primero">Registrar</button>
         <button id="omesocioafiliar" class="primero">Afiliar</button>
+        <button id="omesocioactividad" class="primero">Actividad</button>
         <button id="omesociocertificado" class="primero">Certificado</button>
     </div>
 </div>
@@ -35,13 +36,15 @@
     <h3 align="left" class="titulomenu" title="04">CAJA<img id="img04" class="imagenmenu" src="<?php echo $rutarecursos ?>expander.png" align="right"></h3>
     <div id="04" class="opcionesboton" style="display: none;">
         <button id="omecajadesembolso" class="primero">Desembolso</button>
+        <button id="omecajaboveda" class="primero">Habilitacion</button>
         <button id="omecajaapertura" class="primero">Apertura</button>
+        <button id="omecajabilletaje" class="primero">Billetaje</button>
         <button id="omecajapagocuota" class="primero">Pago Cuota</button>
         <button id="omecajadeposito" class="primero">Deposito</button>
         <button id="omecajaretiro" class="primero">Retiro</button>
         <button id="omecajaretiroanticipado" class="primero">Retiro Anticipado</button>
         <button id="omecajarecaudar" class="primero">Recaudar</button>
-        <button id="omecajabilletajed" class="primero">Billetaje S/.</button>
+        <button id="omecajacajachica" class="primero">Caja Chica</button>
         <button id="omecajaingresoscaja" class="primero">Ingresos Caja</button>
         <button id="omecajaegresoscaja" class="primero">Egresos Caja</button>
         <button id="omecajaflujoxcajeros" class="primero">Flujo X Cajeros</button>
@@ -54,7 +57,7 @@
     </div>
 </div>
 <!--            FIN   MENU    CAJA             -->
-<!--        INICIO   MENU    REPORTRES         -->
+<!--        INICIO   MENU    REPORTES         -->
 <div class="opcmenu">
     <h3 align="left" class="titulomenu" title="05">REPORTES<img id="img05" class="imagenmenu" src="<?php echo $rutarecursos ?>expander.png" align="right"></h3>
     <div id="05" class="opcionesboton" style="display: none;">
@@ -62,6 +65,7 @@
         <button id="omerepoipagado" class="primero">Rpt Interes Pagados</button>
         <button id="omerepoahorros" class="primero">Rpt Ahorros</button>
         <button id="omerepoproductividad" class="primero">Productividad</button>
+        <button id="omereporecaudacion" class="primero">Recaudacion</button>
         <button id="omerepoianalistas" class="primero">Indicadores Analistas</button>
         <button id="omerepoentsal" class="primero">Rpt Entradas y Salidas</button>
         <button id="omerepoexperian" class="primero">Experian</button>

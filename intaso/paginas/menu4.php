@@ -32,17 +32,17 @@
     <h3 align="left" class="titulomenu" title="04">CAJA<img id="img04" class="imagenmenu" src="<?php echo $rutarecursos ?>expander.png" align="right"></h3>
     <div id="04" class="opcionesboton" style="display: none;">
         <button id="omecajaapertura" class="primero">Apertura</button>
+        <button id="omecajabilletaje" class="primero">Billetaje</button>
         <button id="omecajapagocuota" class="primero">Pago Cuota</button>
         <button id="omecajadeposito" class="primero">Deposito</button>
         <button id="omecajaretiroanticipado" class="primero">Retiro Anticipado</button>
         <button id="omecajarecaudar" class="primero">Recaudar</button>
-        <button id="omecajabilletajed" class="primero">Billetaje S/.</button>
         <button id="omecajaingresoscaja" class="primero">Ingresos Caja</button>
         <button id="omecajaegresoscaja" class="primero">Egresos Caja</button>
         <button id="omecajaflujoxcajeros" class="primero">Flujo X Cajeros</button>
         <button id="omecajaflujoxrecaudador" class="primero">Flujo x Recaudador</button>
         <button id="omecajaflujodetallado" class="primero">Flujo Detallado</button>
-        <button id="omecajapagocapital" class="primero">Pago Capital</button>
+        <button id="omecajapagointeres" class="primero">Pago Interes</button>
         <button id="omecajapagototal" class="primero">Pago Total</button>
         <button id="omecajaduplicado" class="primero">Duplicado</button>
     </div>
