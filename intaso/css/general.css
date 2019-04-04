@@ -134,7 +134,7 @@ footer{
 /*    INICIO DE ESTILOS PAG. LOGIN    */
 
 
-select {
+.opcionp {
   font-size: 10px;
   font-family: Arial, Verdana;
   border: 1px solid black;
@@ -144,7 +144,7 @@ select {
   border: 1px solid black;
   color: green;
   height: 20px;
-  width: 100px;
+  width: 80px;
   }
   
 .opcionm {
@@ -173,23 +173,34 @@ select {
   width: 230px;
   }
 
+.opcion {
+  font-size: 10px;
+  font-family: Arial, Verdana;
+  border: 1px solid black;
+  border-radius: 4px;
+  word-spacing: inherit;
+  color: green;
+  border: 1px solid black;
+  height: 20px;
+  background-color: white;
+  }
 
 .texto{
-    height: 16px;
+    height: 18px;
     border: 1px solid black;
-    border-radius: 4px;
-    padding: 2px;
+    border-radius: 3px;
+    padding-left: 2px;
     color: green;
-    font-size: 12px;
+    font-size: 11px;
     text-transform:uppercase;
 }
 
 .numero{
-    width: 45px;
+    width: 50px;
 }
 
 .pequeno{
-    width: 85px;
+    width: 100px;
 }
 
 .mediano{
@@ -239,34 +250,44 @@ select {
 }
 
 input[type="password"]{
-    width: 140px;
-    height: 16px;
+    width: 100px;
+    height: 18px;
     border: 1px solid black;
-    border-radius: 4px;
-    padding: 2px;
+    border-radius: 3px;
     color: green;
-    font-size: 12px;
+    font-size: 11px;
 }
 
-input:focus{
+input:focus, select:focus{
 	background: yellow;
 }
 
-select:focus{
-    background: yellow;
-  }
-
-input:focus:invalid{
+input:focus:invalid, select:focus:invalid{
     background: yellow;
     box-shadow: 0 0 5px #d45252;
     border: 1.5px solid red;
 }
 
-input:required:valid {
-    background: #fff url(images/valid.png) no-repeat 98% center;
+input:required:invalid, select:required:invalid {
+    background: white url(recursos/invalido.png) no-repeat 98% center;
+    box-shadow: 0 0 5px #5cd053;
+    border: 1.5px solid red;
+}
+
+input:required:focus:invalid, select:required:focus:invalid{
+    background-color: yellow;
+}
+
+input:required:valid, select:required:valid {
+    background: #fff url(recursos/valido.png) no-repeat 98% center;
     box-shadow: 0 0 5px #5cd053;
     border: 1.5px solid green;
 }
+
+input:required:focus:valid, select:required:focus:valid{
+    background-color: yellow;
+}
+
 
 .ltexto{
     width: 55px;
@@ -360,6 +381,11 @@ input:required:valid {
     color: #484848;
 }
 
+
+#bgmrmextracto{
+    text-decoration: underline;
+    cursor: pointer;
+}
 /*		   FIN DE ESTILOS GENERAL		  */
 /*----------------------------------------*/
 /*		INICIO DE ESTILOS PAG. LOGIN	  */
