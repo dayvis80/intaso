@@ -72,8 +72,8 @@ create table tsocio(
 	idsocio serial,
 	tipodoc varchar(10) not null,
 	numerodoc varchar(10) not null primary key,
-	apaterno varchar(20) not null,
-	amaterno varchar(20) not null,
+	apaterno varchar(20),
+	amaterno varchar(20),
 	nombres varchar(30) not null,
 	numhijos smallint,
 	ecivil varchar(10),
@@ -333,6 +333,94 @@ fechaineg date,
 observaciones text,
 fechareg date,
 horareg time,
+usuario smallint,
+sucursal smallint
+);
+
+
+drop table if exists tcajachica;
+create table tcajachica(
+idcajachica serial primary key,
+detalle varchar(30),
+periodomes varchar(10),
+periodoano int,
+monto decimal,
+saldo decimal,
+estado smallint,
+usuario smallint,
+sucursal smallint
+);
+
+
+drop table if exists tdetcajachica;
+create table tdetcajachica(
+iddetcajachica serial primary key,
+idcajachica smallint,
+trabajador smallint,
+detalle varchar(30),
+cuenta int,
+tipomov varchar(2),
+moneda varchar(3),
+monto decimal,
+tipodoc varchar(3),
+numerodoc varchar(15),
+fechamov date,
+observaciones text,
+fechareg date,
+horareg time,
+usuario smallint,
+sucursal smallint
+);
+
+
+drop table if exists tboveda;
+create table tboveda(
+idboveda serial primary key,
+trabajador smallint,
+fapertura date,
+hapertura time,
+efectivo decimal,
+usuario smallint,
+sucursal smallint
+);
+
+insert into tboveda(trabajador,fapertura,hapertura,efectivo,usuario,sucursal) values ('4','2018-10-01','8:30:00','0','1','1');
+
+drop table if exists tdetboveda;
+create table tdetboveda(
+iddetboveda serial primary key,
+idboveda smallint,
+idcaja smallint,
+tipomov varchar(2),
+monto decimal,
+saldo decimal,
+fecha date,
+hora time,
+usuario smallint,
+sucursal smallint
+);
+
+
+drop table if exists tbilletaje;
+create table tbilletaje(
+idbilletaje serial primary key,
+trabajador smallint,
+fbilletaje date,
+s200 decimal,
+s100 decimal,
+s50 decimal,
+s20 decimal,
+s10 decimal,
+s5 decimal,
+s2 decimal,
+s1 decimal,
+s050 decimal,
+s020 decimal,
+s010 decimal,
+stotal decimal,
+freg date,
+hreg time,
+observaciones varchar(150),
 usuario smallint,
 sucursal smallint
 );
