@@ -17,9 +17,10 @@
       <th>N°</th>
       <th>ID</th>
       <th>CAJERO</th>
-      <th>F. APERTURA<select id="cafilfapertura" class="opcionp pequeno">
+      <th>F. APERTURA<select id="cafilfapertura" class="opcion numero">
             <option></option>
-            <option value="V1">1 MES</option>
+            <option value="VS">1 SEMANA</option>
+            <option value="VM">1 MES</option>
             <option value="VT">TODO</option>
           </select></th>
       <th>F. CIERRE</th>

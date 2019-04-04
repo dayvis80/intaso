@@ -67,32 +67,32 @@ $tipotrabajador=$_SESSION['tipotrabajador'];
       <td colspan="2">
          <?php
             $tipotrabajador=$_SESSION['tipotrabajador'];
-            $query = pg_query("select tm.descripcion,tm.tipomov,tm.moneda,tm.monto from tmovimiento as tm, ttrabajador as tt  where tm.fechamov='". $fecha ."' and tm.usuario=tt.idtrabajador and tt.idtrabajador='".$idtrabajador."' and tt.tipotrabajador='".$tipotrabajador."' and tm.flujomov='E' and tm.anulado='NO';");
+            $query = pg_query("select concat(ts.apaterno,' ',ts.amaterno,' ',ts.nombres) as socio, tm.descripcion,tm.tipomov, tm.monto from tmovimiento as tm, ttrabajador as tt, tsocio as ts where tm.socio=ts.idsocio and tm.fechamov='". $fecha ."' and tm.usuario=tt.idtrabajador and tt.idtrabajador='".$idtrabajador."' and tt.tipotrabajador='".$tipotrabajador."' and tm.flujomov='E' and tm.anulado='NO';");
             $tregistros = pg_numrows($query);
             $totali=0;
          ?>
-            <table class="tpagina" border="1" style="border-collapse: collapse;">
-            <tr style="padding: 5px;">
+            <table class="tpagina" border="1" style="border-collapse: collapse; font-size:11px;">
+            <tr style="padding: 3px;">
+               <th>SOCIO</th>
                <th>DESCRIPCION</th>
-               <th>TIPO</th>
-               <th>MONEDA</th>
+               <th>MOV</th>
                <th>TOTAL</th>
             </tr>
          <?php
             for($i=1;$i<=$tregistros; $i++){
             $registros = pg_fetch_array($query, null, PGSQL_ASSOC);
             echo '<tr>
+            <td>'. $registros[socio].'</td>
             <td>'. $registros[descripcion].'</td>
             <td>'. $registros[tipomov].'</td>
-            <td>'. $registros[moneda].'</td>
             <td> S/. '. $registros[monto].'</td>
             </tr>';
             $totali=$totali+$registros[monto];
             }
          ?>
            <tr>
-              <td colspan="3">TOTAL</td>
-              <td>S/. <?php echo $totali; ?></td>
+              <td colspan="3"><b>TOTAL</b></td>
+              <td><b>S/. <?php echo $totali; ?></b></td>
            </tr>
            </table>
       </td>
@@ -102,28 +102,28 @@ $tipotrabajador=$_SESSION['tipotrabajador'];
          $tregistros = pg_numrows($query);
          $totale=0;
          ?>
-            <table class="tpagina" border="1" style="border-collapse: collapse;">
-            <tr style="padding: 5px;">
+            <table class="tpagina" border="1" style="border-collapse: collapse; font-size:11px;">
+            <tr style="padding: 3px;">
+               <th>SOCIO</th>
                <th>DESCRIPCION</th>
-               <th>TIPO</th>
-               <th>MONEDA</th>
+               <th>MOV</th>
                <th>TOTAL</th>
             </tr>
          <?php
             for($i=1;$i<=$tregistros; $i++){
             $registros = pg_fetch_array($query, null, PGSQL_ASSOC);
             echo '<tr>
+               <td>'. $registros[socio].'</td>
                <td>'. $registros[descripcion].'</td>
                <td>'. $registros[tipomov].'</td>
-               <td>'. $registros[moneda].'</td>
                <td> S/. '. $registros[monto]*(-1).'</td>
                </tr>';
             $totale=$totale+$registros[monto]*(-1);
             }
          ?>
             <tr>
-               <td colspan="3">TOTAL</td>
-               <td>S/. <?php echo $totale; ?></td>
+               <td colspan="3"><b>TOTAL</b></td>
+               <td><b>S/. <?php echo $totale; ?></b></td>
             </tr>
             </table>
       </td>

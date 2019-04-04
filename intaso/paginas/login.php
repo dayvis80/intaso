@@ -28,15 +28,15 @@ include('../phps/configuracion.php');
             <div id="dlosesion">
                 <table id="tlosesion">
                     <tr><td align="right">Usuario:</td>
-                        <td><input class="texto mediano" type="text" id="elousuario" style="text-transform: none;" maxlength="16"></td>
+                        <td><input class="texto" type="text" id="elousuario" style="text-transform: none; width:120px;" maxlength="16"></td>
                     </tr>
                 
                     <tr><td align="right">Contraseña:</td>
-                        <td><input class="texto mediano" type="password" id="elopassword" maxlength="10" onkeypress="validar(event)"/></td>
+                        <td><input class="texto" type="password" id="elopassword" maxlength="10" style="width:120px;" onkeypress="validar(event)"/></td>
                     </tr>
 
                     <tr>
-                    <td colspan="2" align="left"><center><button id="bloingresar" class="bsistema"><img src="../recursos/bingresar.png"><span>INICIAR SESIÓN</span></button></center></td>
+                    <td colspan="2" align="left"><center><button id="bloingresar" class="bsistema" style="width:135px;"><img src="../recursos/bingresar.png"><span>INICIAR SESIÓN</span></button></center></td>
                     </tr>
                 </table>
              </div>

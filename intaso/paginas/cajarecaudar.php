@@ -4,7 +4,7 @@
       header('Location: login.php');
    }else{
       include('../phps/configuracion.php');
-      $BD_conn = pg_connect("host=".$host." port=".$puerto." user=".$usuario." dbname=".$dbname." password=".$password." ");
+      $BD_conn = pg_connect("host=".$host." port=".$puerto." user=".$usuario." dbname=".$dbname." password=".$password);
    }
 ?>
 

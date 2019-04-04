@@ -33,16 +33,16 @@ function ahorro(){
    <tr><td colspan="2"><h2>INFORMACIÓN DEL SOCIO<h2></td>
       <td>DNI SOCIO:</td>
       <td><input type="text" name="aandni" id="aandni" class="texto pequeno"></td>
-      <td><button id="banbuscarsocio" class="bsistema"><img src="../recursos/socio.png"/><span>BUSCAR</span></button></td>
+      <td><button id="banbuscarsocio" class="bsistema"><img src="../recursos/bbuscar.png"/><span>BUSCAR</span></button></td>
    </tr>
    <tr><td colspan="2">NOMBRE</td>
       <td colspan="2">DIRECCIÓN</td>
       <td>TIPO</td>
       </tr>
-   <tr class="separar"><td colspan="2"><input type="text" name="aansocio" id="aansocio" class="textog"></td>
-      <td colspan="2"><input type="text" name="aandireccion" id="aandireccion" class="textog"></td>
-      <td><input type="text" name="aantipo" id="aantipo" class="textop">
-      <input type="text" name="aanidsocio" id="aanidsocio" class="textop" style="display: none;"></td>
+   <tr class="separar"><td colspan="2"><input type="text" name="aansocio" id="aansocio" class="texto grande" disabled></td>
+      <td colspan="2"><input type="text" name="aandireccion" id="aandireccion" class="texto grande" disabled></td>
+      <td><input type="text" name="aantipo" id="aantipo" class="texto pequeno" disabled=>
+      <input type="text" name="aanidsocio" id="aanidsocio" class="texto pequeno" style="display: none;"></td>
    </tr>
    </table>
 
@@ -50,18 +50,20 @@ function ahorro(){
    <tr class="separar">
       <td colspan="2"><h2>INFORMACIÓN CUENTA DE AHORRO</h2></td>
       <td>SELECCIONAR AHORRO</td>
-       <td><select name="aantipoahorro" id="aantipoahorro" class="opcionm">
+       <td><select name="aantipoahorro" id="aantipoahorro" class="opcion mediano">
           <?php
-            $query = pg_query("select idtipoahorro, descripcion, plazo, tem, moneda, montomin, montomax from ttipoahorro;");
+            $sucursal=$_SESSION['sucursal'];
+            $query = pg_query("select idtipoahorro, descripcion, plazo, tem, moneda, montomin, montomax from ttipoahorro where sucursal='". $sucursal ."' order by descripcion, plazo;");
             $tregistros = pg_numrows($query);
            for($i=1;$i<=$tregistros; $i++){
               $registros = pg_fetch_array($query, null, PGSQL_ASSOC);      
               $valores=$registros[idtipoahorro].'&'.$registros[descripcion].'&'.$registros[plazo].'&'.$registros[tem].'&'.$registros[moneda].'&'.$registros[montomin].'&'.$registros[montomax];
               echo "<option value='".$valores."'>".$registros[descripcion]." ".$registros[plazo]."</option>";
            }
+           pg_free_result($query);
         ?>
        </select></td>
-       <td><button id="bangenerar" class="bsistema"><img src="../recursos/ahorro.png"/><span>GENERAR</span></button></td>
+       <td><button id="bangenerar" class="bsistema"><img src="../recursos/bgenerar.png"/><span>GENERAR</span></button></td>
    </tr>
 
    <tr>
@@ -70,14 +72,14 @@ function ahorro(){
       <td>MONEDA</td>
       <td>MONTO APERTURA</td>
    </tr>
-   <tr><td><input type="text" name="aantem" id="aantem" class="textop"></td>
-       <td><input type="text" name="aanplazo" id="aanplazo" class="textop"></td>
-       <td><select id="aanmoneda">
+   <tr><td><input type="text" name="aantem" id="aantem" class="texto pequeno" disabled></td>
+       <td><input type="text" name="aanplazo" id="aanplazo" class="texto pequeno" disabled></td>
+       <td><select id="aanmoneda" class="opcion pequeno">
           <option value="SOL">S/.</option>
           <option value="DOL">$</option>
           <option value="EUR">€</option>
        </select></td>
-       <td><input type="text" name="aanmonto" id="aanmonto" class="textop"></td>
+       <td><input type="text" name="aanmonto" id="aanmonto" class="texto pequeno"></td>
    </tr>
    <tr>
    </tr>
@@ -100,15 +102,17 @@ $monto=$_POST['monto'];
 $fapertura = date("d-m-Y");
 $mod_date = strtotime($fapertura."+".$plazo."months");
 $fvencimiento=date("d-m-Y",$mod_date);
-  // --->1 Buscamos la ultima cuenta de Ahorro y sumamos uno para la siguiente cuenta
-  $query = pg_query("select max(idahorro) as num from tahorro;");
-  $registros = pg_fetch_array($query, null, PGSQL_ASSOC);
+$sucursal=$_SESSION['sucursal'];
+   // --->1 Buscamos la ultima cuenta de Ahorro y sumamos uno para la siguiente cuenta
+   $query = pg_query("select max(idahorro) as num from tahorro where sucursal='". $sucursal ."';");
+   $registros = pg_fetch_array($query, null, PGSQL_ASSOC);
 
-  if($registros[num]==null){
-    $ncuenta=30000001;
-  }else{
+   if($registros[num]==null){
+      $ncuenta=30000001;
+   }else{
     $ncuenta=$registros[num]+30000001;
   }
+  pg_free_result($query);
 ?>
    <div id="dcuotas" class='dpagina' style="display: block;">
    <img src="../recursos/logoian.png"/>
@@ -125,7 +129,7 @@ $fvencimiento=date("d-m-Y",$mod_date);
          <th width="35%">DIRECCIÓN:</th>          
       </tr>
       <tr class="separar">
-         <td><?php echo ($idsocio+100000)?></td>
+         <td><?php echo ($idsocio+10000000)?></td>
          <td><?php echo $dni?></td>
          <td><?php echo $socio?></td>
          <td><?php echo $direccion?></td>   
@@ -172,10 +176,6 @@ $fvencimiento=date("d-m-Y",$mod_date);
 
 <?php  
 }
-?>
 
-
-<?php
-  pg_free_result($query);
   pg_close($BD_conexion);
 ?>

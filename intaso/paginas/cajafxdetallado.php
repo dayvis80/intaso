@@ -46,6 +46,7 @@ $fecha=$_POST['fecha'];
 $trabajador=$_SESSION['trabajador'];
 $idtrabajador=$_SESSION['idtrabajador'];
 $tipotrabajador=$_SESSION['tipotrabajador'];
+$sucursal=$_SESSION['sucursal'];
 ?>
 <div id="dfxddetalle" class="dpagina" style="display: none;">
 <img src="../recursos/logoian.png"/>
@@ -55,7 +56,7 @@ $tipotrabajador=$_SESSION['tipotrabajador'];
 <br>
    <?php
    // OBTENEMOS LA OPERACIONES DETALLADAS EN INGRESOS
-   $query = pg_query("select tm.numeromov, tm.horamov, tm.cuenta, concat(ts.nombres,' ',ts.apaterno,' ',ts.amaterno) as socio, tm.descripcion, tm.moneda, tm.monto, tm.pago, tm.tipomov, tt.usuario, tm.anulado from tmovimiento as tm, tsocio as ts, ttrabajador as tt where tm.socio=ts.idsocio and tm.usuario=tt.idtrabajador and tm.fechamov='".$fecha."' and flujomov='E' and tm.sucursal='1' order by tm.numeromov;");
+   $query = pg_query("select tm.numeromov, tm.horamov, tm.cuenta, tm.socio as idsocio, concat(ts.nombres,' ',ts.apaterno,' ',ts.amaterno) as socio, tm.descripcion, tm.moneda, tm.monto, tm.pago, tm.tipomov, tt.usuario, tm.anulado from tmovimiento as tm, tsocio as ts, ttrabajador as tt where tm.socio=ts.idsocio and tm.usuario=tt.idtrabajador and tm.fechamov='".$fecha."' and flujomov='E' and tm.sucursal='". $sucursal ."' order by tm.numeromov;");
    $tregistros = pg_numrows($query);
    $totali=0;
    ?>
@@ -84,9 +85,16 @@ $tipotrabajador=$_SESSION['tipotrabajador'];
          echo '<tr>
             <td>'. $i.'</td>
             <td>E-'.str_pad($registros[numeromov],7,'0',STR_PAD_LEFT).'</td>
-            <td>'.$registros[horamov].'</td>
-            <td>'.$registros[socio].'</td>
-            <td>'.$registros[descripcion].'</td>
+            <td>'.$registros[horamov].'</td>';
+            //<td>'.$registros[socio].'</td>
+            if(($registros[tipomov]=='I')){
+            $queryt = pg_query("select concat(apaterno,' ',amaterno,' ',nombres) as trabajador from ttrabajador where idtrabajador='". $registros[idsocio] ."' and sucursal='1';");
+            $registrost = pg_fetch_array($queryt, null, PGSQL_ASSOC);
+               echo "<td>".$registrost[trabajador]."</td>";
+            }else{
+               echo "<td>".$registros[socio]."</td>";          
+            }
+         echo '<td>'.$registros[descripcion].'</td>
             <td>'. $registros[cuenta].'</td>
             <td style="width:11%; text-align:right;"> S/.'.number_format($registros[monto],2,"."," ").'</td>
             <td>'.$registros[tipomov].'</td>
@@ -110,7 +118,7 @@ $tipotrabajador=$_SESSION['tipotrabajador'];
 
    <?php
    // OBTENEMOS LA OPERACIONES DETALLADAS EN EGRESOS
-   $query = pg_query("select tm.numeromov, tm.horamov, tm.cuenta, concat(ts.nombres,' ',ts.apaterno,' ',ts.amaterno) as socio, tm.descripcion, tm.moneda, tm.monto, tm.pago, tm.tipomov, tt.usuario, tm.anulado from tmovimiento as tm, tsocio as ts, ttrabajador as tt where tm.socio=ts.idsocio and tm.usuario=tt.idtrabajador and tm.fechamov='".$fecha."' and flujomov='S' and tm.sucursal='1' order by tm.numeromov");
+   $query = pg_query("select tm.numeromov, tm.horamov, tm.cuenta, tm.socio as idsocio, concat(ts.nombres,' ',ts.apaterno,' ',ts.amaterno) as socio, tm.descripcion, tm.moneda, tm.monto, tm.pago, tm.tipomov, tt.usuario, tm.anulado from tmovimiento as tm, tsocio as ts, ttrabajador as tt where tm.socio=ts.idsocio and tm.usuario=tt.idtrabajador and tm.fechamov='".$fecha."' and flujomov='S' and tm.sucursal='". $sucursal ."' order by tm.numeromov");
    $tregistros = pg_numrows($query);
    $totale=0;
    ?>
@@ -138,9 +146,17 @@ $tipotrabajador=$_SESSION['tipotrabajador'];
          echo '<tr>
             <td>'. $i.'</td>
             <td>S-'.str_pad($registros[numeromov],7,'0',STR_PAD_LEFT).'</td>
-            <td>'.$registros[horamov].'</td>
-            <td>'.$registros[socio].'</td>
-            <td>'.$registros[descripcion].'</td>
+            <td>'.$registros[horamov].'</td>';
+            //<td>'.$registros[socio].'</td>
+            if(($registros[tipomov]=='E')){
+            $queryt = pg_query("select concat(apaterno,' ',amaterno,' ',nombres) as trabajador from ttrabajador where idtrabajador='". $registros[idsocio] ."' and sucursal='1';");
+            $registrost = pg_fetch_array($queryt, null, PGSQL_ASSOC);
+               echo "<td>".$registrost[trabajador]."</td>";
+            }else{
+               echo "<td>".$registros[socio]."</td>";          
+            }
+            pg_fetch_result($queryt);
+         echo '<td>'.$registros[descripcion].'</td>
             <td>'. $registros[cuenta].'</td>
             <td style="width:11%; text-align:right;">S/. '.number_format($registros[monto]*(-1),2,"."," ").'</td>
             <td>'.$registros[tipomov].'</td>

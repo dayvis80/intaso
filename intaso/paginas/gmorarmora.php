@@ -113,7 +113,7 @@ if($idanalista!=0){
             }
          }
          echo '<td>'. $i.'</td>
-            <td>'.$registros[idsocio].'</td>
+            <td><label id="bgmrmextracto">'.$registros[nprestamo].'</label></td>
             <td>'.$registros[socio].'</td>
             <td>'.$registros[descripcion].'</td>
             <td>S/.'.number_format($registros[scapital],2,"."," ").'</td>
@@ -195,7 +195,7 @@ if($idanalista!=0){
             }
          }
          echo '<td>'. $j.'</td>
-               <td>'.$registros[idsocio].'</td>
+               <td><label id="bgmrmextracto">'.$registros[nprestamo].'</label></td>
                <td>'.$registros[socio].'</td>
                <td>'.$registros[descripcion].'</td>
                <td>S/.'.number_format($registros[scapital],2,"."," ").'</td>
@@ -228,6 +228,17 @@ if($idanalista!=0){
 <center>
 <button id="bgmrmimprimir" class="bsistema"><img src="../recursos/bimprimir.png"/><span>IMPRIMIR</span></button>
 </center><br>
+
+  <div id="dmodextractoprestamo" class="dmodalfondo">
+    <div class="dmodalmensaje" style="width:800px;">
+      <div class="dmodaltitulo">EXTRACTO PRESTAMO
+      </div>
+
+      <div id="dextractoprestamo" class="dmodalcontenido" style="height: 520px; overflow: auto;">
+      </div>
+
+    </div>  
+  </div>
 <?php  
 }
 ?>
